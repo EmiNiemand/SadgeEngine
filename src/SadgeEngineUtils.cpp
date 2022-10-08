@@ -4,7 +4,7 @@
 
 #include "../lib/SadgeEngineUtils.h"
 
-SDL_Texture *Sadge::SadgeEngineUtils::InitTexture(std::string path, SDL_Renderer *renderer) {
+SDL_Texture *Sadge::SadgeEngineUtils::CreateTexture(std::string path, SDL_Renderer *renderer) {
     //The final texture
     SDL_Texture* NewTexture = nullptr;
 
@@ -30,7 +30,7 @@ SDL_Texture *Sadge::SadgeEngineUtils::InitTexture(std::string path, SDL_Renderer
     return NewTexture;
 }
 
-SDL_Rect Sadge::SadgeEngineUtils::CreateShapeAndPosition(int width, int height, int x, int y) {
+SDL_Rect Sadge::SadgeEngineUtils::CreateRect(int width, int height, int x, int y) {
     SDL_Rect Rect;
     Rect.w = width;
     Rect.h = height;

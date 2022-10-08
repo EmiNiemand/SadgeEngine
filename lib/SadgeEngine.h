@@ -30,9 +30,9 @@ namespace Sadge {
         virtual ~SadgeEngine();
 
         // Initialize window, renderer, etc.
-        bool Init();
+        bool Initialize();
         // Frame update
-        void Loop();
+        void Update();
 
         SDL_Renderer *getRenderer() const;
 

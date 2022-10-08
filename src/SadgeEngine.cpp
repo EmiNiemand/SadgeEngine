@@ -21,7 +21,7 @@ Sadge::SadgeEngine::~SadgeEngine() {
     SDL_Quit();
 }
 
-bool Sadge::SadgeEngine::Init() {
+bool Sadge::SadgeEngine::Initialize() {
     //Create window
     Window = SDL_CreateWindow("The Saddest Window Ever", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                               WindowResolution.first, WindowResolution.second, SDL_WINDOW_SHOWN);
@@ -51,7 +51,7 @@ bool Sadge::SadgeEngine::Init() {
     return true;
 }
 
-void Sadge::SadgeEngine::Loop() {
+void Sadge::SadgeEngine::Update() {
 
     //Hack to get window to stay up
     SDL_Event e;
