@@ -14,7 +14,7 @@ int main( int arc, char* argv[] ) {
         std::shared_ptr<Sadge::SadgeActor> Cloud = std::make_shared<Sadge::SadgeCloud>(CloudTexture, &CloudRect);
 
         SDL_Texture* PetrFatTexture = Sadge::SadgeEngineUtils::InitTexture("../png/petrfat.png", Engine.getRenderer());
-        SDL_Rect PetrFatRect = Sadge::SadgeEngineUtils::CreateShapeAndPosition(50, 50, 50, 0);
+        SDL_Rect PetrFatRect = Sadge::SadgeEngineUtils::CreateShapeAndPosition(200, 200, 50, 0);
         std::shared_ptr<Sadge::SadgePawn> PetrFat = std::make_shared<Sadge::SadgePetrFat>(PetrFatTexture, &PetrFatRect);
 
         Engine.SpawnActor(Cloud);
