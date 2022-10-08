@@ -14,7 +14,7 @@ namespace Sadge {
     class SadgeEngine {
     private:
         // Window resolution
-        std::pair<uint16_t, uint16_t> Resolution;
+        std::pair<uint16_t, uint16_t> WindowResolution;
         // Pointer to window
         SDL_Window* Window;
         // Pointer to renderer
@@ -25,14 +25,14 @@ namespace Sadge {
         std::list<std::shared_ptr<SadgePawn>> Pawns;
 
     public:
-        explicit SadgeEngine(const std::pair<uint16_t, uint16_t> &Resolution = std::make_pair(640, 480));
+        explicit SadgeEngine(const std::pair<uint16_t, uint16_t> &WindowResolution = std::make_pair(640, 480));
+        // Release resources
+        virtual ~SadgeEngine();
 
         // Initialize window, renderer, etc.
         bool Init();
         // Frame update
         void Loop();
-        // Release resources on loop end
-        void End();
 
         SDL_Renderer *getRenderer() const;
 

@@ -1,12 +1,30 @@
 #include "../lib/SadgeEngine.h"
 
 
-Sadge::SadgeEngine::SadgeEngine(const std::pair<uint16_t, uint16_t> &Resolution) : Resolution(Resolution) {}
+Sadge::SadgeEngine::SadgeEngine(const std::pair<uint16_t, uint16_t> &WindowResolution) : WindowResolution(WindowResolution) {}
+
+Sadge::SadgeEngine::~SadgeEngine() {
+    for(std::shared_ptr<SadgePawn> Pawn : Pawns) {
+        SDL_DestroyTexture(Pawn->getTexture());
+    }
+
+    for(std::shared_ptr<SadgeActor> Actor : Actors) {
+        SDL_DestroyTexture(Actor->getTexture());
+    }
+
+    //Destroy window
+    SDL_DestroyRenderer(Renderer);
+    SDL_DestroyWindow(Window);
+
+    //Quit SDL subsystems
+    IMG_Quit();
+    SDL_Quit();
+}
 
 bool Sadge::SadgeEngine::Init() {
     //Create window
     Window = SDL_CreateWindow("The Saddest Window Ever", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                               Resolution.first, Resolution.second, SDL_WINDOW_SHOWN);
+                              WindowResolution.first, WindowResolution.second, SDL_WINDOW_SHOWN);
 
     if(Window == nullptr) {
         printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
@@ -21,7 +39,7 @@ bool Sadge::SadgeEngine::Init() {
         }
         else {
             //Initialize renderer color
-            SDL_SetRenderDrawColor( Renderer, 0x20, 0x20, 0x20, 0xFF);
+            SDL_SetRenderDrawColor( Renderer, 0x60, 0x60, 0x60, 0xFF);
             //Initialize PNG loading
             int imgFlags = IMG_INIT_PNG;
             if( !( IMG_Init( imgFlags ) & imgFlags ) ) {
@@ -42,7 +60,6 @@ void Sadge::SadgeEngine::Loop() {
         while(SDL_PollEvent(&e)) {
             if(e.type == SDL_QUIT){
                 quit = true;
-                End();
             }
         }
         //Clear screen
@@ -51,8 +68,8 @@ void Sadge::SadgeEngine::Loop() {
         for(std::shared_ptr<SadgePawn> Pawn : Pawns) {
             Pawn->Update();
             SDL_Rect* Position = Pawn->getShapeAndPosition();
-            if(Position->y > Resolution.second - Position->h) {
-                Pawn->setNewPosition(Position->x, Resolution.second - Position->h);
+            if(Position->y > WindowResolution.second - Position->h) {
+                Pawn->setNewPosition(Position->x, WindowResolution.second - Position->h);
             }
             SDL_RenderCopy(Renderer, Pawn->getTexture(), nullptr, Pawn->getShapeAndPosition());
         }
@@ -66,24 +83,6 @@ void Sadge::SadgeEngine::Loop() {
 
         SDL_Delay(20);
     }
-}
-
-void Sadge::SadgeEngine::End() {
-    for(std::shared_ptr<SadgePawn> Pawn : Pawns) {
-        SDL_DestroyTexture(Pawn->getTexture());
-    }
-
-    for(std::shared_ptr<SadgeActor> Actor : Actors) {
-        SDL_DestroyTexture(Actor->getTexture());
-    }
-
-    //Destroy window
-    SDL_DestroyRenderer(Renderer);
-    SDL_DestroyWindow(Window);
-
-    //Quit SDL subsystems
-    IMG_Quit();
-    SDL_Quit();
 }
 
 SDL_Renderer *Sadge::SadgeEngine::getRenderer() const {
