@@ -8,7 +8,7 @@ int main( int arc, char* argv[] ) {
 
     Sadge::SadgeEngine Engine(std::make_pair(1200, 600));
 
-    if(Engine.Initialize()){
+    if(Engine.Start()){
         SDL_Texture* CloudTexture = Sadge::SadgeEngineUtils::CreateTexture("../png/Cloud1.png", Engine.getRenderer());
         SDL_Rect CloudRect = Sadge::SadgeEngineUtils::CreateRect(100, 100, 100, 100);
         std::shared_ptr<Sadge::SadgeActor> Cloud = std::make_shared<Sadge::SadgeCloud>(CloudTexture, &CloudRect);

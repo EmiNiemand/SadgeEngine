@@ -15,9 +15,10 @@ namespace Sadge{
         SadgePawn(SDL_Texture *texture, SDL_Rect *shapeAndPosition, bool bGravityOn);
         ~SadgePawn() override;
 
-        virtual void Update();
-        virtual void Move() = 0;
-        void Shift(int x, int y);
+        virtual void Update(double DeltaTime);
+        virtual void Move(double DeltaTime) = 0;
+    protected:
+        void Shift(double x, double y, double DeltaTime);
     };
 }
 

@@ -6,7 +6,10 @@
 
 
 Sadge::SadgeActor::SadgeActor(SDL_Texture *texture, SDL_Rect *shapeAndPosition) : Texture(texture),
-                                                                                  ShapeAndPosition(shapeAndPosition) {}
+                                                                                  ShapeAndScreenPosition(shapeAndPosition) {
+    RealPosition.first = ShapeAndScreenPosition->x;
+    RealPosition.second = ShapeAndScreenPosition->y;
+}
 
 Sadge::SadgeActor::~SadgeActor() {
 
@@ -17,11 +20,19 @@ SDL_Texture *Sadge::SadgeActor::getTexture() const {
     return Texture;
 }
 
-SDL_Rect *Sadge::SadgeActor::getShapeAndPosition() const {
-    return ShapeAndPosition;
+SDL_Rect *Sadge::SadgeActor::getShapeAndScreenPosition() const {
+    return ShapeAndScreenPosition;
 }
 
-void Sadge::SadgeActor::setNewPosition(int x, int y) {
-    ShapeAndPosition->x = x;
-    ShapeAndPosition->y = y;
+const std::pair<double, double> &Sadge::SadgeActor::getRealPosition() const {
+    return RealPosition;
 }
+
+void Sadge::SadgeActor::setNewPosition(double x, double y) {
+    RealPosition.first = x;
+    RealPosition.second = y;
+    ShapeAndScreenPosition->x = (int)(RealPosition.first);
+    ShapeAndScreenPosition->y = (int)(RealPosition.second);
+}
+
+

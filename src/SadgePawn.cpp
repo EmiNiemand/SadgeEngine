@@ -5,20 +5,19 @@
 #include "../lib/SadgePawn.h"
 
 Sadge::SadgePawn::SadgePawn(SDL_Texture *texture, SDL_Rect *shapeAndPosition, bool bGravityOn) : SadgeActor(texture,
-    shapeAndPosition), bGravityOn(bGravityOn) {}
+                                                                    shapeAndPosition), bGravityOn(bGravityOn) {}
 
 Sadge::SadgePawn::~SadgePawn() {}
 
-void Sadge::SadgePawn::Update() {
-    Move();
+void Sadge::SadgePawn::Update(double DeltaTime) {
+    Move(DeltaTime);
     if(bGravityOn) {
-        Shift(0, 9);
+        Shift(0, 98.1, DeltaTime);
     }
 }
 
-void Sadge::SadgePawn::Shift(int x, int y) {
-    SDL_Rect* Position = getShapeAndPosition();
-    setNewPosition(Position->x + x, Position->y + y);
+void Sadge::SadgePawn::Shift(double x, double y, double DeltaTime) {
+    auto Position = getRealPosition();
+    setNewPosition(Position.first + x * DeltaTime, Position.second + y * DeltaTime);
 }
-
 

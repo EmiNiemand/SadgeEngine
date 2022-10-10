@@ -29,8 +29,8 @@ namespace Sadge {
         // Release resources
         virtual ~SadgeEngine();
 
-        // Initialize window, renderer, etc.
-        bool Initialize();
+        // Start window, renderer, etc.
+        bool Start();
         // Frame update
         void Update();
 

@@ -4,8 +4,8 @@
 
 #include "../lib/SadgeCloud.h"
 
-Sadge::SadgeCloud::SadgeCloud(SDL_Texture *texture, SDL_Rect *shapeAndPosition) : SadgeActor(texture,
-                                                                                             shapeAndPosition) {}
+Sadge::SadgeCloud::SadgeCloud(SDL_Texture *texture, SDL_Rect *shapeAndPosition)
+        : SadgeActor(texture, shapeAndPosition) {}
 
 Sadge::SadgeCloud::~SadgeCloud() {
 

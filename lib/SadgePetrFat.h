@@ -14,7 +14,7 @@ namespace Sadge {
     public:
         SadgePetrFat(SDL_Texture *texture, SDL_Rect *shapeAndPosition, bool bGravityOn = true);
 
-        void Move() override;
+        void Move(double DeltaTime) override;
     };
 }
 

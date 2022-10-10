@@ -11,6 +11,7 @@ namespace Sadge {
     class SadgeCloud : public SadgeActor {
     public:
         SadgeCloud(SDL_Texture *texture, SDL_Rect *shapeAndPosition);
+
         ~SadgeCloud() override;
     };
 }

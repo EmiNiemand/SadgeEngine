@@ -4,18 +4,16 @@
 
 #include "../lib/SadgePetrFat.h"
 
-Sadge::SadgePetrFat::SadgePetrFat(SDL_Texture *texture, SDL_Rect *shapeAndPosition, bool bGravityOn) : SadgePawn(
-        texture, shapeAndPosition, bGravityOn) {}
+Sadge::SadgePetrFat::SadgePetrFat(SDL_Texture *texture, SDL_Rect *shapeAndPosition, bool bGravityOn) :
+SadgePawn(texture, shapeAndPosition, bGravityOn) {}
 
-
-void Sadge::SadgePetrFat::Move() {
-    SDL_Rect* ShapeAndPosition = getShapeAndPosition();
-    if(ShapeAndPosition->x == 0){
+void Sadge::SadgePetrFat::Move(double DeltaTime) {
+    auto playerPosition = getShapeAndScreenPosition();
+    if(playerPosition->x == 0){
         Direction = 1;
     }
-    else if(ShapeAndPosition->x == 1200 - ShapeAndPosition->w){
+    else if(playerPosition->x == 1200 - getShapeAndScreenPosition()->w){
         Direction = -1;
     }
-    Shift(Direction * 10, 0);
+    Shift(Direction * 50, 0, DeltaTime);
 }
-
