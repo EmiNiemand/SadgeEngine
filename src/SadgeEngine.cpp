@@ -1,6 +1,6 @@
 #include "../lib/SadgeEngine.h"
 
-#include <ctime>
+#include "chrono"
 #include <iostream>
 
 Sadge::SadgeEngine::SadgeEngine(const std::pair<uint16_t, uint16_t> &WindowResolution) : WindowResolution(WindowResolution) {}
@@ -54,16 +54,15 @@ bool Sadge::SadgeEngine::Start() {
 }
 
 void Sadge::SadgeEngine::Update() {
-
-    auto StartTime = clock();
+    auto StartTime = std::chrono::high_resolution_clock::now();
     auto FrameEndTime = StartTime;
-    double DeltaTime;
+    std::chrono::duration<double> DeltaTime{};
 
     //Hack to get window to stay up
     SDL_Event e;
     bool quit = false;
     while(!quit) {
-        auto FrameStartTime = clock();
+        auto FrameStartTime = std::chrono::high_resolution_clock::now();
         while(SDL_PollEvent(&e)) {
             if(e.type == SDL_QUIT){
                 quit = true;
@@ -71,24 +70,21 @@ void Sadge::SadgeEngine::Update() {
         }
         //Clear screen
         SDL_RenderClear(Renderer);
-
         for(std::shared_ptr<SadgePawn> Pawn : Pawns) {
-            Pawn->Update(DeltaTime);
+            Pawn->Update(DeltaTime.count());
             auto Position = Pawn->getShapeAndScreenPosition();
             if(Position->y > WindowResolution.second - Position->h) {
                 Pawn->setNewPosition(Pawn->getRealPosition().first, WindowResolution.second - Position->h);
             }
             SDL_RenderCopy(Renderer, Pawn->getTexture(), nullptr, Pawn->getShapeAndScreenPosition());
         }
-
         for(std::shared_ptr<SadgeActor> Actor : Actors) {
             SDL_RenderCopy(Renderer, Actor->getTexture(), nullptr, Actor->getShapeAndScreenPosition());
         }
-
         //Update screen
         SDL_RenderPresent(Renderer);
-        DeltaTime = (double)(FrameStartTime - FrameEndTime) / CLOCKS_PER_SEC;
-        FrameEndTime = FrameStartTime;
+        DeltaTime = std::chrono::high_resolution_clock::now() - FrameEndTime;
+        FrameEndTime = std::chrono::high_resolution_clock::now();
     }
 }
 
