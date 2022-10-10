@@ -7,7 +7,6 @@
 
 #include <SDL_image.h>
 #include <utility>
-#include <cstdint>
 
 namespace Sadge{
     class SadgeActor {

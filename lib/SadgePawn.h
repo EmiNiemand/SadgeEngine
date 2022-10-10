@@ -18,7 +18,7 @@ namespace Sadge{
         virtual void Update(double DeltaTime);
         virtual void Move(double DeltaTime) = 0;
     protected:
-        void Shift(double x, double y, double DeltaTime);
+        void Shift(double x, double y);
     };
 }
 

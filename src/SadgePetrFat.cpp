@@ -15,5 +15,5 @@ void Sadge::SadgePetrFat::Move(double DeltaTime) {
     else if(playerPosition->x == 1200 - getShapeAndScreenPosition()->w){
         Direction = -1;
     }
-    Shift(Direction * 50, 0, DeltaTime);
+    Shift(Direction * 50 * DeltaTime, 0 * DeltaTime);
 }

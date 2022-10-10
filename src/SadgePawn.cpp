@@ -12,12 +12,12 @@ Sadge::SadgePawn::~SadgePawn() {}
 void Sadge::SadgePawn::Update(double DeltaTime) {
     Move(DeltaTime);
     if(bGravityOn) {
-        Shift(0, 98.1, DeltaTime);
+        Shift(0 * DeltaTime, 98.1 * DeltaTime);
     }
 }
 
-void Sadge::SadgePawn::Shift(double x, double y, double DeltaTime) {
+void Sadge::SadgePawn::Shift(double x, double y) {
     auto Position = getRealPosition();
-    setNewPosition(Position.first + x * DeltaTime, Position.second + y * DeltaTime);
+    setNewPosition(Position.first + x, Position.second + y);
 }
 

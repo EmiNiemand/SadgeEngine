@@ -1,5 +1,7 @@
 #include "../lib/SadgeEngine.h"
+
 #include "chrono"
+#include <iostream>
 
 Sadge::SadgeEngine::SadgeEngine(const std::pair<uint16_t, uint16_t> &WindowResolution) : WindowResolution(WindowResolution) {}
 
@@ -56,6 +58,7 @@ void Sadge::SadgeEngine::Update() {
     auto StartTime = std::chrono::high_resolution_clock::now();
     auto FrameEndTime = StartTime;
     std::chrono::duration<double> DeltaTime{};
+
     //Hack to get window to stay up
     SDL_Event e;
     bool quit = false;

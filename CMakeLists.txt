@@ -13,7 +13,9 @@ include_directories(${SDL2_IMAGE_INCLUDE_DIR})
 link_directories(${SDL2_LIB_DIR})
 link_directories(${SDL2_IMAGE_LIB_DIR})
 
-add_executable(SadgeEngine main.cpp src/SadgeEngine.cpp lib/SadgeEngine.h src/SadgeActor.cpp lib/SadgeActor.h src/SadgeEngineUtils.cpp lib/SadgeEngineUtils.h src/SadgeCloud.cpp lib/SadgeCloud.h src/SadgePawn.cpp lib/SadgePawn.h src/SadgePetrFat.cpp lib/SadgePetrFat.h)
+add_executable(SadgeEngine main.cpp src/SadgeEngine.cpp lib/SadgeEngine.h src/SadgeActor.cpp lib/SadgeActor.h
+        src/SadgeEngineUtils.cpp lib/SadgeEngineUtils.h src/SadgeCloud.cpp lib/SadgeCloud.h
+        src/SadgePawn.cpp lib/SadgePawn.h src/SadgePetrFat.cpp lib/SadgePetrFat.h)
 
 add_subdirectory(src)
 add_subdirectory(lib)

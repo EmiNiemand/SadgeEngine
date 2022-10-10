@@ -1,14 +1,14 @@
 #ifndef SADGEENGINE_SADGEENGINE_H
 #define SADGEENGINE_SADGEENGINE_H
 
+#include "SDL.h"
+#include "SadgeActor.h"
+#include "SadgePawn.h"
+
 #include <SDL.h>
 #include <SDL_image.h>
 #include <memory>
 #include <list>
-#include <iostream>
-#include "SDL.h"
-#include "SadgeActor.h"
-#include "SadgePawn.h"
 
 namespace Sadge {
     class SadgeEngine {
