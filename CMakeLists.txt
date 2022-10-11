@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.23)
 project(SadgeEngine)
 
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_EXE_LINKER_FLAGS "-static")
 
 set(SDL2_INCLUDE_DIR C:/Libs/SDL/include)
 set(SDL2_LIB_DIR C:/Libs/SDL/lib/x64)
