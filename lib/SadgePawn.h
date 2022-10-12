@@ -6,6 +6,7 @@
 #define SADGEENGINE_SADGEPAWN_H
 
 #include "SadgeActor.h"
+#include <vector>
 
 namespace Sadge{
     class SadgePawn : public SadgeActor {
@@ -15,8 +16,8 @@ namespace Sadge{
         SadgePawn(SDL_Texture *texture, SDL_Rect *shapeAndPosition, bool bGravityOn);
         ~SadgePawn() override;
 
-        virtual void Update(double DeltaTime);
-        virtual void Move(double DeltaTime) = 0;
+        virtual void Update(double DeltaTime, std::vector<SDL_Event> EventList);
+        virtual void Move(double DeltaTime, std::vector<SDL_Event> EventList) = 0;
     protected:
         void Shift(double x, double y);
     };

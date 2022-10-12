@@ -60,10 +60,12 @@ void Sadge::SadgeEngine::Update() {
 
     //Hack to get window to stay up
     SDL_Event e;
+    std::vector<SDL_Event> Events;
     bool quit = false;
     while(!quit) {
         auto FrameStartTime = std::chrono::high_resolution_clock::now();
         while(SDL_PollEvent(&e)) {
+            Events.push_back(e);
             if(e.type == SDL_QUIT){
                 quit = true;
             }
@@ -71,7 +73,7 @@ void Sadge::SadgeEngine::Update() {
         //Clear screen
         SDL_RenderClear(Renderer);
         for(std::shared_ptr<SadgePawn> Pawn : Pawns) {
-            Pawn->Update(DeltaTime.count());
+            Pawn->Update(DeltaTime.count(), Events);
             auto Position = Pawn->getShapeAndScreenPosition();
             if(Position->y > WindowResolution.second - Position->h) {
                 Pawn->setNewPosition(Pawn->getRealPosition().first, WindowResolution.second - Position->h);
@@ -81,10 +83,14 @@ void Sadge::SadgeEngine::Update() {
         for(std::shared_ptr<SadgeActor> Actor : Actors) {
             SDL_RenderCopy(Renderer, Actor->getTexture(), nullptr, Actor->getShapeAndScreenPosition());
         }
+        if (DeltaTime.count() < 0.016){
+            SDL_Delay(16 - DeltaTime.count() * 1000);
+        }
         //Update screen
         SDL_RenderPresent(Renderer);
         DeltaTime = std::chrono::high_resolution_clock::now() - FrameEndTime;
         FrameEndTime = std::chrono::high_resolution_clock::now();
+        Events.clear();
     }
 }
 

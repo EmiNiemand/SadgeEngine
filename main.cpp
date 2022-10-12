@@ -1,24 +1,20 @@
 #include "lib/SadgeEngine.h"
 #include "lib/SadgeEngineUtils.h"
-#include "lib/SadgePetrFat.h"
-#include "lib/SadgeCloud.h"
+#include "lib/Player1.h"
 #include <memory>
 
 int main( int arc, char* argv[] ) {
 
     Sadge::SadgeEngine Engine(std::make_pair(1200, 600));
 
+
     if(Engine.Start()) {
-        SDL_Texture* CloudTexture = Sadge::SadgeEngineUtils::CreateTexture("../png/Cloud1.png", Engine.getRenderer());
-        SDL_Rect CloudRect = Sadge::SadgeEngineUtils::CreateRect(100, 100, 100, 100);
-        std::shared_ptr<Sadge::SadgeActor> Cloud = std::make_shared<Sadge::SadgeCloud>(CloudTexture, &CloudRect);
+        SDL_Texture* Player1Texture = Sadge::SadgeEngineUtils::CreateTexture("../png/petrfat.png", Engine.getRenderer());
+        SDL_Rect Player1Rect = Sadge::SadgeEngineUtils::CreateRect(200, 200, 50, 0);
+        std::shared_ptr<Sadge::SadgePawn> Player1 = std::make_shared<Sadge::Player1>(Player1Texture, &Player1Rect, true);
 
-        SDL_Texture* PetrFatTexture = Sadge::SadgeEngineUtils::CreateTexture("../png/petrfat.png", Engine.getRenderer());
-        SDL_Rect PetrFatRect = Sadge::SadgeEngineUtils::CreateRect(200, 200, 50, 0);
-        std::shared_ptr<Sadge::SadgePawn> PetrFat = std::make_shared<Sadge::SadgePetrFat>(PetrFatTexture, &PetrFatRect);
+        Engine.SpawnPawn(Player1);
 
-        Engine.SpawnActor(Cloud);
-        Engine.SpawnPawn(PetrFat);
         Engine.Update();
     }
 
