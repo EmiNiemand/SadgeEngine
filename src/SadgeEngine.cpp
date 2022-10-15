@@ -57,6 +57,9 @@ void Sadge::SadgeEngine::Update() {
     auto FrameEndTime = StartTime;
     std::chrono::duration<double> DeltaTime{};
 
+    SadgeFileMap Map("../png/Map");
+    Map.CreateMap(Renderer, "../png/TileUpperWall.png", "../png/TileSideWall.png", "../png/TileFloor.png");
+
     //Hack to get window to stay up
     SDL_Event e;
     std::vector<SDL_Event> Events;
@@ -71,6 +74,8 @@ void Sadge::SadgeEngine::Update() {
         }
         //Clear screen
         SDL_RenderClear(Renderer);
+        Map.RenderMap(Renderer);
+
         for(std::shared_ptr<SadgePawn> Pawn : Pawns) {
             Pawn->Update(DeltaTime.count(), Events);
             auto Position = Pawn->getShapeAndScreenPosition();
