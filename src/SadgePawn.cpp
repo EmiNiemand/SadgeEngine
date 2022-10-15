@@ -9,7 +9,7 @@ Sadge::SadgePawn::SadgePawn(SDL_Texture *texture, SDL_Rect *shapeAndPosition, bo
 
 Sadge::SadgePawn::~SadgePawn() {}
 
-void Sadge::SadgePawn::Update(double DeltaTime, std::vector<SDL_Event> EventList) {
+void Sadge::SadgePawn::Update(double DeltaTime, std::vector<SDL_Event> &EventList) {
     Move(DeltaTime, EventList);
     if(bGravityOn) {
         Shift(0 * DeltaTime, 98.1 * DeltaTime);

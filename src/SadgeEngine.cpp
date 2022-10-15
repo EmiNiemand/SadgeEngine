@@ -1,5 +1,4 @@
 #include "../lib/SadgeEngine.h"
-
 #include "chrono"
 #include <iostream>
 
@@ -80,6 +79,7 @@ void Sadge::SadgeEngine::Update() {
             }
             SDL_RenderCopy(Renderer, Pawn->getTexture(), nullptr, Pawn->getShapeAndScreenPosition());
         }
+
         for(std::shared_ptr<SadgeActor> Actor : Actors) {
             SDL_RenderCopy(Renderer, Actor->getTexture(), nullptr, Actor->getShapeAndScreenPosition());
         }

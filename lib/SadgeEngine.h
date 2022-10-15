@@ -6,6 +6,7 @@
 #include "SadgePawn.h"
 #include "SadgeEngineUtils.h"
 #include "Player1.h"
+#include "Player2.h"
 
 #include <SDL.h>
 #include <SDL_image.h>
