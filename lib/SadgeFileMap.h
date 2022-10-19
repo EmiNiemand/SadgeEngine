@@ -13,14 +13,15 @@
 namespace Sadge{
     class SadgeFileMap {
     private:
-        std::vector<std::string> FileContent;
+        std::string FileContent;
         std::vector<std::pair<SDL_Texture*, SDL_Rect>> MapTiles;
     public:
         SadgeFileMap(std::string Path);
 
         void CreateMap(SDL_Renderer* Renderer, std::string UpWallPath, std::string SideWallPath, std::string FloorPath);
         void RenderMap(SDL_Renderer* Renderer);
-        static std::vector<std::string> ReadFile(std::string& Path);
+    private:
+        std::string ReadFile(std::string& Path);
     };
 }
 

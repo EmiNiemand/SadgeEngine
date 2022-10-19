@@ -4,8 +4,6 @@
 
 #include "../lib/Player1.h"
 
-#include <iostream>
-
 Sadge::Player1::Player1(SDL_Texture *texture, SDL_Rect *shapeAndPosition, bool bGravityOn, double moveSpeed) : SadgePawn(texture,
                                                             shapeAndPosition, bGravityOn), MoveSpeed(moveSpeed) {}
 
