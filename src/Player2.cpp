@@ -13,14 +13,14 @@ void Sadge::Player2::Update(double DeltaTime, std::vector<SDL_Event> &EventList)
 }
 
 void Sadge::Player2::Move(double DeltaTime, std::vector<SDL_Event> &EventList) {
-    HandleEvent(EventList);
+    int XPos;
+    int YPos;
+    SDL_GetMouseState( &XPos, &YPos );
+    Lerp(x, y, XPos, YPos, 0.1);
     setNewPosition(x - this->getShapeAndScreenPosition()->w / 2, y - this->getShapeAndScreenPosition()->h / 2);
 }
 
-void Sadge::Player2::HandleEvent(std::vector<SDL_Event> &EventList) {
-for (SDL_Event e : EventList) {
-    if (e.type == SDL_MOUSEMOTION) {
-            SDL_GetMouseState( &x, &y );
-        }
-    }
+void Sadge::Player2::Lerp(int &X, int &Y, int XDest, int YDest, double LerpValue) {
+    X = X + (XDest - X) * LerpValue;
+    Y = Y + (YDest - Y) * LerpValue;
 }

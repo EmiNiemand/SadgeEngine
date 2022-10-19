@@ -20,12 +20,6 @@ namespace Sadge{
     private:
         PlayerMoveState PlayerMovingState{};
         double MoveSpeed;
-        double SmoothSide = 0;
-        double SmoothUp = 0;
-        double SideVelocity;
-        double UpVelocity;
-        int8_t PreviousStateSide = 0;
-        int8_t PreviousStateUp = 0;
     public:
         Player1(SDL_Texture *texture, SDL_Rect *shapeAndPosition, bool bGravityOn, double MoveSpeed);
 

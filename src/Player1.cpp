@@ -15,50 +15,7 @@ void Sadge::Player1::Update(double DeltaTime, std::vector<SDL_Event> &EventList)
 
 void Sadge::Player1::Move(double DeltaTime, std::vector<SDL_Event> &EventList) {
     HandleEvent(EventList);
-    if((PlayerMovingState.RIGHT == 1 && PlayerMovingState.LEFT == 0) || (PlayerMovingState.LEFT == 1 && PlayerMovingState.RIGHT == 0)) {
-        if(PreviousStateSide == 1 && PlayerMovingState.LEFT == 1)
-        {
-            SmoothSide = 0;
-        }
-        else if(PreviousStateSide == -1 && PlayerMovingState.RIGHT == 1)
-        {
-            SmoothSide = 0;
-        }
-        SmoothSide = SDL_clamp(SmoothSide + DeltaTime, 0, 1);
-        SideVelocity = (1 - SmoothSide) * SideVelocity + (PlayerMovingState.RIGHT - PlayerMovingState.LEFT) * MoveSpeed * SmoothSide;
-        PreviousStateSide = (int8_t)(PlayerMovingState.RIGHT - PlayerMovingState.LEFT);
-    }
-    else if((PlayerMovingState.RIGHT == 1 && PlayerMovingState.LEFT == 1) || (PlayerMovingState.RIGHT == 0 && PlayerMovingState.LEFT == 0)) {
-        int8_t Side = 1;
-        if(SideVelocity < 0) {
-            Side = -1;
-        }
-        SmoothSide = SDL_clamp(SmoothSide - DeltaTime, 0, 1);
-        SideVelocity = Side * SmoothSide * MoveSpeed;
-    }
-    if((PlayerMovingState.UP == 1 && PlayerMovingState.DOWN == 0) || (PlayerMovingState.DOWN == 1 && PlayerMovingState.UP == 0)) {
-        if(PreviousStateUp == 1 && PlayerMovingState.UP == 1)
-        {
-            SmoothUp = 0;
-        }
-        else if(PreviousStateUp == -1 && PlayerMovingState.DOWN == 1)
-        {
-            SmoothUp = 0;
-        }
-        SmoothUp = SDL_clamp(SmoothUp + DeltaTime, 0, 1);
-        UpVelocity = (1 - SmoothUp) * UpVelocity + (PlayerMovingState.DOWN - PlayerMovingState.UP) * MoveSpeed * SmoothUp;
-        PreviousStateUp = (int8_t)(PlayerMovingState.DOWN - PlayerMovingState.UP);
-    }
-    else if((PlayerMovingState.UP == 1 && PlayerMovingState.DOWN == 1) || (PlayerMovingState.UP == 0 && PlayerMovingState.DOWN == 0)) {
-        int8_t Side = 1;
-        if(UpVelocity < 0) {
-            Side = -1;
-        }
-        SmoothUp = SDL_clamp(SmoothUp - DeltaTime, 0, 1);
-        UpVelocity = Side * SmoothUp * MoveSpeed;
-    }
-
-    Shift(SideVelocity, UpVelocity);
+    Shift(MoveSpeed * (PlayerMovingState.RIGHT - PlayerMovingState.LEFT), MoveSpeed * (PlayerMovingState.DOWN - PlayerMovingState.UP));
 }
 
 void Sadge::Player1::HandleEvent(std::vector<SDL_Event> &EventList) {

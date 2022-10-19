@@ -17,7 +17,8 @@ namespace Sadge{
         void Update(double DeltaTime, std::vector<SDL_Event> &EventList) override;
         void Move(double DeltaTime, std::vector<SDL_Event> &EventList) override;
 
-        void HandleEvent(std::vector<SDL_Event> &EventList);
+    private:
+        void Lerp(int &X, int &Y, int XDest, int YDest, double LerpValue);
     };
 }
 
