@@ -48,10 +48,17 @@ void Sadge::SadgeFileMap::CreateMap(SDL_Renderer* Renderer, std::string UpWallPa
         }
         i++;
     }
+    MapSize = std::make_pair(i * 30, j * 30);
 }
 
-void Sadge::SadgeFileMap::RenderMap(SDL_Renderer *Renderer) {
+void Sadge::SadgeFileMap::RenderMap(SDL_Renderer *Renderer, SDL_Rect Camera) {
     for(std::pair<SDL_Texture*, SDL_Rect> Tile : MapTiles){
-        SDL_RenderCopy(Renderer, Tile.first, nullptr, &Tile.second);
+        SDL_Rect Pos = SadgeEngineUtils::CreateRect(Tile.second.w, Tile.second.h, Tile.second.x - Camera.x,
+                                                    Tile.second.y - Camera.y);
+        SDL_RenderCopy(Renderer, Tile.first, nullptr, &Pos);
     }
+}
+
+const std::pair<uint64_t, uint64_t> &Sadge::SadgeFileMap::getMapSize() const {
+    return MapSize;
 }

@@ -8,6 +8,7 @@
 #include "Player1.h"
 #include "Player2.h"
 #include "SadgeFileMap.h"
+#include "Camera.h"
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -24,9 +25,9 @@ namespace Sadge {
         // Pointer to renderer
         SDL_Renderer* Renderer;
         // Spawned actors
-        std::list<std::shared_ptr<SadgeActor>> Actors;
+        std::vector<std::shared_ptr<SadgeActor>> Actors;
         // Spawned pawns
-        std::list<std::shared_ptr<SadgePawn>> Pawns;
+        std::vector<std::shared_ptr<SadgePawn>> Pawns;
 
     public:
         explicit SadgeEngine(const std::pair<uint16_t, uint16_t> &WindowResolution = std::make_pair(640, 480));
@@ -42,6 +43,8 @@ namespace Sadge {
 
         void SpawnActor(std::shared_ptr<SadgeActor> Actor);
         void SpawnPawn(std::shared_ptr<SadgePawn> Pawn);
+
+        const std::pair<uint16_t, uint16_t> &getWindowResolution() const;
     };
 }
 

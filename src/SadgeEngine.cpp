@@ -60,6 +60,10 @@ void Sadge::SadgeEngine::Update() {
     SadgeFileMap Map("../png/Map");
     Map.CreateMap(Renderer, "../png/TileUpperWall.png", "../png/TileSideWall.png", "../png/TileFloor.png");
 
+    SDL_Rect CamRect = SadgeEngineUtils::CreateRect(WindowResolution.first, WindowResolution.second,
+                                                    WindowResolution.first/2, WindowResolution.second/2);
+    Camera Cam(CamRect, Map.getMapSize());
+
     //Hack to get window to stay up
     SDL_Event e;
     std::vector<SDL_Event> Events;
@@ -74,7 +78,10 @@ void Sadge::SadgeEngine::Update() {
         }
         //Clear screen
         SDL_RenderClear(Renderer);
-        Map.RenderMap(Renderer);
+
+        Cam.Update(Pawns.at(0));
+
+        Map.RenderMap(Renderer, Cam.getCameraPos());
 
         for(std::shared_ptr<SadgePawn> Pawn : Pawns) {
             Pawn->Update(DeltaTime.count(), Events);
@@ -82,7 +89,9 @@ void Sadge::SadgeEngine::Update() {
             if(Position->y > WindowResolution.second - Position->h) {
                 Pawn->setNewPosition(Pawn->getRealPosition().first, WindowResolution.second - Position->h);
             }
-            SDL_RenderCopy(Renderer, Pawn->getTexture(), nullptr, Pawn->getShapeAndScreenPosition());
+            SDL_Rect Pos = SadgeEngineUtils::CreateRect(Position->w, Position->h, Position->x - Cam.getCameraPos().x,
+                                                        Position->y - Cam.getCameraPos().y);
+            SDL_RenderCopy(Renderer, Pawn->getTexture(), nullptr, &Pos);
         }
 
         for(std::shared_ptr<SadgeActor> Actor : Actors) {
@@ -109,5 +118,9 @@ void Sadge::SadgeEngine::SpawnActor(std::shared_ptr<SadgeActor> Actor) {
 
 void Sadge::SadgeEngine::SpawnPawn(std::shared_ptr<SadgePawn> Pawn) {
     Pawns.push_back(Pawn);
+}
+
+const std::pair<uint16_t, uint16_t> &Sadge::SadgeEngine::getWindowResolution() const {
+    return WindowResolution;
 }
 
