@@ -19,7 +19,13 @@ void Sadge::Camera::setPosition(int x, int y) {
 void Sadge::Camera::Update(std::shared_ptr<SadgePawn> PawnToFocus) {
     SDL_Rect* Pos = PawnToFocus->getShapeAndScreenPosition();
     if(abs((Pos->x - CameraPos.w / 2) - CameraPos.x) > 100) {
-        Lerp(CameraPos.x, Pos->x - CameraPos.w / 2, 0.02);
+        if((Pos->x - CameraPos.w / 2) - CameraPos.x > 100) {
+            setPosition(Pos->x - CameraPos.w / 2 - 100,CameraPos.y);
+        }
+        else if((Pos->x - CameraPos.w / 2) - CameraPos.x < 100) {
+            setPosition(Pos->x - CameraPos.w / 2 + 100,CameraPos.y);
+        }
+        /*Lerp(CameraPos.x, Pos->x - CameraPos.w / 2, 0.02);*/
     }
     setPosition(CameraPos.x,(Pos->y + Pos->h / 2) - CameraPos.h / 2);
 
