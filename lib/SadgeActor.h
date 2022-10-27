@@ -12,16 +12,15 @@ namespace Sadge{
     class SadgeActor {
     private:
         SDL_Texture* Texture;
-        SDL_Rect* ShapeAndScreenPosition;
-        std::pair<double, double> RealPosition;
+        SDL_Rect ShapeAndPosition;
     public:
-        SadgeActor(SDL_Texture *texture, SDL_Rect *shapeAndPosition);
+        SadgeActor(SDL_Texture *texture, SDL_Rect shapeAndPosition);
         virtual ~SadgeActor() = 0;
 
         SDL_Texture *getTexture() const;
-        SDL_Rect *getShapeAndScreenPosition() const;
-        const std::pair<double, double> &getRealPosition() const;
-        void setNewPosition(double x, double y);
+        SDL_Rect getShapeAndPosition() const;
+    protected:
+        void setPosition(int x, int y);
     };
 
 }

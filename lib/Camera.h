@@ -21,8 +21,6 @@ namespace Sadge{
         const SDL_Rect &getCameraPos() const;
         void setPosition(int x, int y);
         void Update(std::shared_ptr<SadgePawn> PawnToFocus);
-    private:
-        void Lerp(int &X, int XDest, double LerpValue);
     };
 }
 

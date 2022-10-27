@@ -4,8 +4,11 @@
 
 #include "../lib/SadgePawn.h"
 
-Sadge::SadgePawn::SadgePawn(SDL_Texture *texture, SDL_Rect *shapeAndPosition, bool bGravityOn) : SadgeActor(texture,
-                                                                    shapeAndPosition), bGravityOn(bGravityOn) {}
+Sadge::SadgePawn::SadgePawn(SDL_Texture *texture, SDL_Rect shapeAndPosition, bool bGravityOn) : SadgeActor(texture,
+                                                                    shapeAndPosition), bGravityOn(bGravityOn) {
+    RealPosition.first = shapeAndPosition.x;
+    RealPosition.second = shapeAndPosition.y;
+}
 
 Sadge::SadgePawn::~SadgePawn() {}
 
@@ -21,3 +24,12 @@ void Sadge::SadgePawn::Shift(double x, double y) {
     setNewPosition(Position.first + x, Position.second + y);
 }
 
+const std::pair<double, double> &Sadge::SadgePawn::getRealPosition() const {
+    return RealPosition;
+}
+
+void Sadge::SadgePawn::setNewPosition(double x, double y) {
+    RealPosition.first = x;
+    RealPosition.second = y;
+    this->setPosition((int)(RealPosition.first), (int)(RealPosition.second));
+}

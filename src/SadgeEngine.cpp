@@ -58,10 +58,13 @@ void Sadge::SadgeEngine::Update() {
     std::chrono::duration<double> DeltaTime{};
 
     SadgeFileMap Map("../png/Map");
-    Map.CreateMap(Renderer, "../png/TileUpperWall.png", "../png/TileSideWall.png", "../png/TileFloor.png");
+    Map.CreateMap(Renderer, "../png/TileUpperWall.png", "../png/TileSideWall.png", "../png/TileFloor.png", 30);
+    for (std::shared_ptr<SadgeActor> Actor : Map.getMapTiles()){
+        SpawnActor(Actor);
+    }
 
     SDL_Rect CamRect = SadgeEngineUtils::CreateRect(WindowResolution.first, WindowResolution.second,
-                                                    WindowResolution.first/2, WindowResolution.second/2);
+                                                    0, 300);
     Camera Cam(CamRect, Map.getMapSize());
 
     //Hack to get window to stay up
@@ -81,22 +84,21 @@ void Sadge::SadgeEngine::Update() {
 
         Cam.Update(Pawns.at(0));
 
-        Map.RenderMap(Renderer, Cam.getCameraPos());
+        for(std::shared_ptr<SadgeActor> Actor : Actors) {
+            auto Position = Actor->getShapeAndPosition();
+            SDL_Rect Pos = SadgeEngineUtils::CreateRect(Position.w, Position.h, Position.x - Cam.getCameraPos().x,
+                                                        Position.y - Cam.getCameraPos().y);
+            SDL_RenderCopy(Renderer, Actor->getTexture(), nullptr, &Pos);
+        }
 
         for(std::shared_ptr<SadgePawn> Pawn : Pawns) {
             Pawn->Update(DeltaTime.count(), Events);
-            auto Position = Pawn->getShapeAndScreenPosition();
-            if(Position->y > WindowResolution.second - Position->h) {
-                Pawn->setNewPosition(Pawn->getRealPosition().first, WindowResolution.second - Position->h);
-            }
-            SDL_Rect Pos = SadgeEngineUtils::CreateRect(Position->w, Position->h, Position->x - Cam.getCameraPos().x,
-                                                        Position->y - Cam.getCameraPos().y);
+            auto Position = Pawn->getShapeAndPosition();
+            SDL_Rect Pos = SadgeEngineUtils::CreateRect(Position.w, Position.h, Position.x - Cam.getCameraPos().x,
+                                                        Position.y - Cam.getCameraPos().y);
             SDL_RenderCopy(Renderer, Pawn->getTexture(), nullptr, &Pos);
         }
 
-        for(std::shared_ptr<SadgeActor> Actor : Actors) {
-            SDL_RenderCopy(Renderer, Actor->getTexture(), nullptr, Actor->getShapeAndScreenPosition());
-        }
         if (DeltaTime.count() < 0.016){
             SDL_Delay(16 - DeltaTime.count() * 1000);
         }

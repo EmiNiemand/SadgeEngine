@@ -12,7 +12,7 @@ int main( int arc, char* argv[] ) {
     if(Engine.Start()) {
         SDL_Texture* Player1Texture = Sadge::SadgeEngineUtils::CreateTexture("../png/Vent.png", Engine.getRenderer());
         SDL_Rect Player1Rect = Sadge::SadgeEngineUtils::CreateRect(50, 50, Engine.getWindowResolution().first / 2, Engine.getWindowResolution().second / 2);
-        std::shared_ptr<Sadge::SadgePawn> Player1 = std::make_shared<Sadge::Player1>(Player1Texture, &Player1Rect, false, 2);
+        std::shared_ptr<Sadge::SadgePawn> Player1 = std::make_shared<Sadge::Player1>(Player1Texture, Player1Rect, false, 2);
 
 
         Engine.SpawnPawn(Player1);

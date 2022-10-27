@@ -21,7 +21,7 @@ namespace Sadge{
         PlayerMoveState PlayerMovingState{};
         double MoveSpeed;
     public:
-        Player1(SDL_Texture *texture, SDL_Rect *shapeAndPosition, bool bGravityOn, double MoveSpeed);
+        Player1(SDL_Texture *texture, SDL_Rect shapeAndPosition, bool bGravityOn, double MoveSpeed);
 
         void Update(double DeltaTime, std::vector<SDL_Event> &EventList) override;
         void Move(double DeltaTime, std::vector<SDL_Event> &EventList) override;

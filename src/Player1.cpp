@@ -4,7 +4,7 @@
 
 #include "../lib/Player1.h"
 
-Sadge::Player1::Player1(SDL_Texture *texture, SDL_Rect *shapeAndPosition, bool bGravityOn, double moveSpeed) : SadgePawn(texture,
+Sadge::Player1::Player1(SDL_Texture *texture, SDL_Rect shapeAndPosition, bool bGravityOn, double moveSpeed) : SadgePawn(texture,
                                                             shapeAndPosition, bGravityOn), MoveSpeed(moveSpeed) {}
 
 void Sadge::Player1::Update(double DeltaTime, std::vector<SDL_Event> &EventList) {

@@ -16,7 +16,7 @@ link_directories(${SDL2_IMAGE_LIB_DIR})
 
 add_executable(SadgeEngine main.cpp src/SadgeEngine.cpp lib/SadgeEngine.h src/SadgeActor.cpp lib/SadgeActor.h
         src/SadgeEngineUtils.cpp lib/SadgeEngineUtils.h src/SadgePawn.cpp lib/SadgePawn.h
-        src/Player1.cpp lib/Player1.h src/Player1.cpp lib/Player1.h src/Player2.cpp lib/Player2.h src/SadgeFileMap.cpp lib/SadgeFileMap.h src/Camera.cpp lib/Camera.h)
+        src/Player1.cpp lib/Player1.h src/Player1.cpp lib/Player1.h src/Player2.cpp lib/Player2.h src/SadgeFileMap.cpp lib/SadgeFileMap.h src/Camera.cpp lib/Camera.h src/SadgeTile.cpp lib/SadgeTile.h)
 
 add_subdirectory(src)
 add_subdirectory(lib)

@@ -12,7 +12,7 @@ namespace Sadge{
     private:
         int x, y;
     public:
-        Player2(SDL_Texture *texture, SDL_Rect *shapeAndPosition, bool bGravityOn);
+        Player2(SDL_Texture *texture, SDL_Rect shapeAndPosition, bool bGravityOn);
 
         void Update(double DeltaTime, std::vector<SDL_Event> &EventList) override;
         void Move(double DeltaTime, std::vector<SDL_Event> &EventList) override;

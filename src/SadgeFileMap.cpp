@@ -21,44 +21,49 @@ std::string Sadge::SadgeFileMap::ReadFile(std::string& Path) {
     return Content;
 }
 
-void Sadge::SadgeFileMap::CreateMap(SDL_Renderer* Renderer, std::string UpWallPath, std::string SideWallPath, std::string FloorPath) {
-    int i = 0;
-    int j = 0;
+void Sadge::SadgeFileMap::CreateMap(SDL_Renderer* Renderer, std::string UpWallPath, std::string SideWallPath, std::string FloorPath, int TileSize) {
+    int horLength = 0;
+    int maxHorLength = 0;
+    int VerLength = 0;
     for(char Character : FileContent) {
         if(Character == '\n')
         {
-            i = 0;
-            j++;
+            if(maxHorLength < horLength){
+                maxHorLength = horLength;
+            }
+            horLength = 0;
+            VerLength++;
             continue;
         }
         else if(Character == '|') {
             SDL_Texture* TileTexture = SadgeEngineUtils::CreateTexture(SideWallPath, Renderer);
-            SDL_Rect Tile = SadgeEngineUtils::CreateRect(30, 30, 0 + 30 * i, 0 + 30 * j);
-            MapTiles.push_back(std::make_pair(TileTexture, Tile));
+            SDL_Rect TileRect = SadgeEngineUtils::CreateRect(TileSize, TileSize, TileSize * horLength, TileSize * VerLength);
+            SadgeTile Tile(TileTexture, TileRect);
+            MapTiles.push_back(std::make_shared<Sadge::SadgeTile>(Tile));
         }
         else if(Character == '-') {
             SDL_Texture* TileTexture = SadgeEngineUtils::CreateTexture(UpWallPath, Renderer);
-            SDL_Rect Tile = SadgeEngineUtils::CreateRect(30, 30, 0 + 30 * i, 0 + 30 * j);
-            MapTiles.push_back(std::make_pair(TileTexture, Tile));
+            SDL_Rect TileRect = SadgeEngineUtils::CreateRect(TileSize, TileSize, TileSize * horLength, TileSize * VerLength);
+            SadgeTile Tile(TileTexture, TileRect);
+            MapTiles.push_back(std::make_shared<Sadge::SadgeTile>(Tile));
         }
         else if(Character == '.') {
             SDL_Texture* TileTexture = SadgeEngineUtils::CreateTexture(FloorPath, Renderer);
-            SDL_Rect Tile = SadgeEngineUtils::CreateRect(30, 30, 0 + 30 * i, 0 + 30 * j);
-            MapTiles.push_back(std::make_pair(TileTexture, Tile));
+            SDL_Rect TileRect = SadgeEngineUtils::CreateRect(TileSize, TileSize, TileSize * horLength, TileSize * VerLength);
+            SadgeTile Tile(TileTexture, TileRect);
+            MapTiles.push_back(std::make_shared<Sadge::SadgeTile>(Tile));
         }
-        i++;
+        horLength++;
     }
-    MapSize = std::make_pair(i * 30, j * 30);
+    MapSize = std::make_pair(maxHorLength * TileSize, (VerLength + 1) * TileSize);
 }
 
-void Sadge::SadgeFileMap::RenderMap(SDL_Renderer *Renderer, SDL_Rect Camera) {
-    for(std::pair<SDL_Texture*, SDL_Rect> Tile : MapTiles){
-        SDL_Rect Pos = SadgeEngineUtils::CreateRect(Tile.second.w, Tile.second.h, Tile.second.x - Camera.x,
-                                                    Tile.second.y - Camera.y);
-        SDL_RenderCopy(Renderer, Tile.first, nullptr, &Pos);
-    }
-}
 
 const std::pair<uint64_t, uint64_t> &Sadge::SadgeFileMap::getMapSize() const {
     return MapSize;
 }
+
+const std::vector<std::shared_ptr<Sadge::SadgeActor>> &Sadge::SadgeFileMap::getMapTiles() const {
+    return MapTiles;
+}
+
