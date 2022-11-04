@@ -7,19 +7,16 @@
 
 #include "SDL.h"
 #include "SadgePawn.h"
+#include "SadgeCamera.h"
 #include <iostream>
 #include <memory>
 
 namespace Sadge{
-    class Camera {
-    private:
-        SDL_Rect CameraPos;
-        std::pair<uint64_t, uint64_t> MapSize;
+    class Camera : public SadgeCamera{
     public:
         Camera(const SDL_Rect &cameraPos, const std::pair<uint64_t, uint64_t> &mapSize);
+        ~Camera() override;
 
-        const SDL_Rect &getCameraPos() const;
-        void setPosition(int x, int y);
         void Update(std::shared_ptr<SadgePawn> PawnToFocus);
     };
 }

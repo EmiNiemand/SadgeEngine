@@ -4,20 +4,17 @@
 
 #include "../lib/Camera.h"
 
-Sadge::Camera::Camera(const SDL_Rect &cameraPos, const std::pair<uint64_t, uint64_t> &mapSize) : CameraPos(cameraPos),
-                                                                                                 MapSize(mapSize) {}
+Sadge::Camera::Camera(const SDL_Rect &cameraPos, const std::pair<uint64_t, uint64_t> &mapSize) : SadgeCamera(cameraPos,
+                                                                                                             mapSize) {}
 
-const SDL_Rect &Sadge::Camera::getCameraPos() const {
-    return CameraPos;
-}
+Sadge::Camera::~Camera() {
 
-void Sadge::Camera::setPosition(int x, int y) {
-    CameraPos.x = x;
-    CameraPos.y = y;
 }
 
 void Sadge::Camera::Update(std::shared_ptr<SadgePawn> PawnToFocus) {
     SDL_Rect Pos = PawnToFocus->getShapeAndPosition();
+    SDL_Rect CameraPos = getCameraPos();
+    std::pair<uint64_t, uint64_t> MapSize = getMapSize();
     if(Pos.x + 100 <= CameraPos.w / 2) {
         setPosition(0, CameraPos.y);
     }
@@ -44,3 +41,4 @@ void Sadge::Camera::Update(std::shared_ptr<SadgePawn> PawnToFocus) {
         setPosition(CameraPos.x,Pos.y - CameraPos.h / 2);
     }
 }
+

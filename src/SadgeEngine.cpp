@@ -1,6 +1,7 @@
 #include "../lib/SadgeEngine.h"
 #include "chrono"
 #include <iostream>
+#include <math.h>
 
 Sadge::SadgeEngine::SadgeEngine(const std::pair<uint16_t, uint16_t> &WindowResolution) : WindowResolution(WindowResolution) {}
 
@@ -56,6 +57,7 @@ void Sadge::SadgeEngine::Update() {
     auto StartTime = std::chrono::high_resolution_clock::now();
     auto FrameEndTime = StartTime;
     std::chrono::duration<double> DeltaTime{};
+    float Scale = 1;
 
     SadgeFileMap Map("../png/Map");
     Map.CreateMap(Renderer, "../png/TileUpperWall.png", "../png/TileSideWall.png", "../png/TileFloor.png", 30);
@@ -64,8 +66,19 @@ void Sadge::SadgeEngine::Update() {
     }
 
     SDL_Rect CamRect = SadgeEngineUtils::CreateRect(WindowResolution.first, WindowResolution.second,
-                                                    0, 300);
-    Camera Cam(CamRect, Map.getMapSize());
+                                                    0, 0);
+    CameraForBothPlayers Cam(CamRect, Map.getMapSize());
+
+    SDL_Texture* Player1Texture = Sadge::SadgeEngineUtils::CreateTexture("../png/Vent.png", Renderer);
+    SDL_Rect Player1Rect = Sadge::SadgeEngineUtils::CreateRect(50, 50, WindowResolution.first / 2, WindowResolution.second / 2);
+    std::shared_ptr<Sadge::SadgePawn> Player1 = std::make_shared<Sadge::Player1>(Player1Texture, Player1Rect, false, 2);
+
+    SDL_Texture* Player2Texture = Sadge::SadgeEngineUtils::CreateTexture("../png/circle.png", Renderer);
+    SDL_Rect Player2Rect = Sadge::SadgeEngineUtils::CreateRect(50, 50, WindowResolution.first / 2, WindowResolution.second / 2);
+    std::shared_ptr<Sadge::SadgePawn> Player2 = std::make_shared<Sadge::Player2>(Player2Texture, Player2Rect, false, &Cam, Scale);
+
+    SpawnPawn(Player1);
+    SpawnPawn(Player2);
 
     //Hack to get window to stay up
     SDL_Event e;
@@ -82,24 +95,63 @@ void Sadge::SadgeEngine::Update() {
         //Clear screen
         SDL_RenderClear(Renderer);
 
-        Cam.Update(Pawns.at(0));
+        Scale = 1 - std::sqrt(std::pow(Pawns.at(0)->getShapeAndPosition().x - Pawns.at(1)->getShapeAndPosition().x, 2)
+                + std::pow(Pawns.at(0)->getShapeAndPosition().y - Pawns.at(1)->getShapeAndPosition().y, 2)) /
+                (std::sqrt(std::pow(WindowResolution.first, 2) + std::pow(WindowResolution.second, 2)) * 2) * 0.50;
 
-        for(std::shared_ptr<SadgeActor> Actor : Actors) {
+        Scale = std::ceil(Scale * 100) / 100;
+        Cam.Update(Pawns.at(0), Pawns.at(1), Scale);
+        /*for(std::shared_ptr<SadgeActor> Actor : Actors) {
             auto Position = Actor->getShapeAndPosition();
-            SDL_Rect Pos = SadgeEngineUtils::CreateRect(Position.w, Position.h, Position.x - Cam.getCameraPos().x,
-                                                        Position.y - Cam.getCameraPos().y);
+            SDL_Rect Pos;
+
+            Pos = SadgeEngineUtils::CreateRect(Position.w, Position.h,
+                                   (Position.x - Cam.getCameraPos().x),(Position.y - Cam.getCameraPos().y));
+
             SDL_RenderCopy(Renderer, Actor->getTexture(), nullptr, &Pos);
         }
 
         for(std::shared_ptr<SadgePawn> Pawn : Pawns) {
             Pawn->Update(DeltaTime.count(), Events);
             auto Position = Pawn->getShapeAndPosition();
-            SDL_Rect Pos = SadgeEngineUtils::CreateRect(Position.w, Position.h, Position.x - Cam.getCameraPos().x,
-                                                        Position.y - Cam.getCameraPos().y);
+            SDL_Rect Pos;
+
+            Pos = SadgeEngineUtils::CreateRect(Position.w, Position.h,
+                                               (Position.x - Cam.getCameraPos().x),(Position.y - Cam.getCameraPos().y));
+
+            SDL_RenderCopy(Renderer, Pawn->getTexture(), nullptr, &Pos);
+        }*/
+
+        for(std::shared_ptr<SadgeActor> Actor : Actors) {
+            auto Position = Actor->getShapeAndPosition();
+            SDL_Rect Pos;
+            Pos = SadgeEngineUtils::CreateRect(Position.w * Scale + 1, Position.h * Scale + 1,
+                                   (Position.x - Cam.getCameraPos().x) * Scale,(Position.y - Cam.getCameraPos().y) * Scale);
+
+            SDL_RenderCopy(Renderer, Actor->getTexture(), nullptr, &Pos);
+        }
+        std::printf("%i, %i, %i, %i\n", Pawns.at(0)->getShapeAndPosition().x, Pawns.at(0)->getShapeAndPosition().y,
+                    Pawns.at(1)->getShapeAndPosition().x, Pawns.at(1)->getShapeAndPosition().y);
+        for(std::shared_ptr<SadgePawn> Pawn : Pawns) {
+            Pawn->Update(DeltaTime.count(), Events);
+            auto Position = Pawn->getShapeAndPosition();
+            SDL_Rect Pos;
+            if(Pawn == Pawns.at(1)){
+                int XPos;
+                int YPos;
+                SDL_GetMouseState(&XPos, &YPos);
+                Pos = SadgeEngineUtils::CreateRect(Position.w * Scale + 1, Position.h * Scale + 1,
+                                   XPos, YPos);
+            }
+            else{
+                Pos = SadgeEngineUtils::CreateRect(Position.w * Scale + 1, Position.h * Scale + 1,
+                                    (Position.x - Cam.getCameraPos().x) * Scale,(Position.y - Cam.getCameraPos().y) * Scale);
+            }
+
             SDL_RenderCopy(Renderer, Pawn->getTexture(), nullptr, &Pos);
         }
 
-        if (DeltaTime.count() < 0.016){
+        if (DeltaTime.count() < 0.016) {
             SDL_Delay(16 - DeltaTime.count() * 1000);
         }
         //Update screen

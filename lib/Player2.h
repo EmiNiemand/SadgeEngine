@@ -6,13 +6,16 @@
 #define SADGEENGINE_PLAYER2_H
 
 #include "SadgePawn.h"
+#include "SadgeCamera.h"
 
 namespace Sadge{
     class Player2 : public SadgePawn {
     private:
         int x, y;
+        SadgeCamera* Cam;
+        float& Scale;
     public:
-        Player2(SDL_Texture *texture, SDL_Rect shapeAndPosition, bool bGravityOn);
+        Player2(SDL_Texture *texture, SDL_Rect shapeAndPosition, bool bGravityOn, SadgeCamera* cam, float& scale);
 
         void Update(double DeltaTime, std::vector<SDL_Event> &EventList) override;
         void Move(double DeltaTime, std::vector<SDL_Event> &EventList) override;
