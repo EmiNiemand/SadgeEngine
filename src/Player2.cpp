@@ -20,7 +20,6 @@ void Sadge::Player2::Move(double DeltaTime, std::vector<SDL_Event> &EventList) {
     SDL_GetMouseState(&XPos, &YPos);
     XPos = (XPos / Scale + Cam->getCameraPos().x);
     YPos = (YPos / Scale + Cam->getCameraPos().y);
-    std::printf("%i, %i\n", Cam->getCameraPos().x, Cam->getCameraPos().y);
 
     Lerp(x, y, XPos, YPos, 0.1);
     setNewPosition(x - this->getShapeAndPosition().w / 2, y - this->getShapeAndPosition().h / 2);

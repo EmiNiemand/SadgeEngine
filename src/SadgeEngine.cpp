@@ -130,8 +130,7 @@ void Sadge::SadgeEngine::Update() {
 
             SDL_RenderCopy(Renderer, Actor->getTexture(), nullptr, &Pos);
         }
-        std::printf("%i, %i, %i, %i\n", Pawns.at(0)->getShapeAndPosition().x, Pawns.at(0)->getShapeAndPosition().y,
-                    Pawns.at(1)->getShapeAndPosition().x, Pawns.at(1)->getShapeAndPosition().y);
+
         for(std::shared_ptr<SadgePawn> Pawn : Pawns) {
             Pawn->Update(DeltaTime.count(), Events);
             auto Position = Pawn->getShapeAndPosition();
