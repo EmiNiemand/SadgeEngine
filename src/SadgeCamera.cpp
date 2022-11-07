@@ -2,7 +2,7 @@
 // Created by szymo on 02/11/2022.
 //
 
-#include "SadgeCamera.h"
+#include "../lib/SadgeCamera.h"
 
 Sadge::SadgeCamera::SadgeCamera(const SDL_Rect &cameraPos, const std::pair<uint64_t, uint64_t> &mapSize) : CameraPos(
         cameraPos), MapSize(mapSize) {}
