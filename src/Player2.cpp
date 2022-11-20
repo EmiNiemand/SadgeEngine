@@ -22,7 +22,7 @@ void Sadge::Player2::Move(double DeltaTime, std::vector<SDL_Event> &EventList) {
     YPos = (YPos / Scale + Cam->getCameraPos().y);
 
     Lerp(x, y, XPos, YPos, 0.1);
-    setNewPosition(x - this->getShapeAndPosition().w / 2, y - this->getShapeAndPosition().h / 2);
+    setNewPosition(Vector2<double>(x - this->getShapeAndPosition().w / 2, y - this->getShapeAndPosition().h / 2));
 }
 
 void Sadge::Player2::Lerp(int &X, int &Y, int XDest, int YDest, double LerpValue) {

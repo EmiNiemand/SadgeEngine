@@ -6,12 +6,14 @@
 #define SADGEENGINE_SADGEPAWN_H
 
 #include "SadgeActor.h"
+#include "Vector2.h"
 #include <vector>
+#include <memory>
 
 namespace Sadge{
     class SadgePawn : public SadgeActor {
     private:
-        std::pair<double, double> RealPosition;
+        Vector2<double> RealPosition;
         bool bGravityOn;
     public:
         SadgePawn(SDL_Texture *texture, SDL_Rect shapeAndPosition, bool bGravityOn);
@@ -19,10 +21,11 @@ namespace Sadge{
 
         virtual void Update(double DeltaTime, std::vector<SDL_Event> &EventList);
         virtual void Move(double DeltaTime, std::vector<SDL_Event> &EventList) = 0;
-        const std::pair<double, double> &getRealPosition() const;
-        void setNewPosition(double x, double y);
+        virtual void CheckCollision(std::shared_ptr<Sadge::SadgePawn> CollidingPawn, std::pair<uint16_t, uint16_t> WindowResolution) = 0;
+        const Vector2<double> &getRealPosition() const;
+        void setNewPosition(Vector2<double> position);
     protected:
-        void Shift(double x, double y);
+        void Shift(Vector2<double> vector2);
     };
 }
 

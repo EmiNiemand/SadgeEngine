@@ -13,7 +13,7 @@ void Sadge::Player1::Update(double DeltaTime, std::vector<SDL_Event> &EventList)
 
 void Sadge::Player1::Move(double DeltaTime, std::vector<SDL_Event> &EventList) {
     HandleEvent(EventList);
-    Shift(MoveSpeed * (PlayerMovingState.RIGHT - PlayerMovingState.LEFT), MoveSpeed * (PlayerMovingState.DOWN - PlayerMovingState.UP));
+    Shift(Vector2<double>(MoveSpeed * (PlayerMovingState.RIGHT - PlayerMovingState.LEFT), MoveSpeed * (PlayerMovingState.DOWN - PlayerMovingState.UP)));
 }
 
 void Sadge::Player1::HandleEvent(std::vector<SDL_Event> &EventList) {
