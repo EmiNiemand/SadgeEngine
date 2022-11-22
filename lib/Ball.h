@@ -12,6 +12,8 @@ namespace Sadge{
     private:
         float Speed;
         Vector2<double> Direction;
+        bool CollisionEnabled = true;
+        bool SeparationEnabled = true;
 
     public:
         Ball(SDL_Texture *texture, const SDL_Rect &shapeAndPosition, bool bGravityOn, double speed,
@@ -25,6 +27,8 @@ namespace Sadge{
         void setDirection(const Vector2<double> &direction);
 
         const Vector2<double> &getDirection() const;
+
+        void EventHandler(std::vector<SDL_Event> &EventList);
 
         void CheckCollision(std::shared_ptr<Sadge::SadgePawn> CollidingPawn, std::pair<uint16_t, uint16_t> WindowResolution) override;
     };

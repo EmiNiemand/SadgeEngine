@@ -14,6 +14,7 @@ Sadge::Ball::~Ball() {
 }
 
 void Sadge::Ball::Update(double DeltaTime, std::vector<SDL_Event> &EventList) {
+    EventHandler(EventList);
     SadgePawn::Update(DeltaTime, EventList);
 }
 
@@ -45,16 +46,20 @@ void Sadge::Ball::CheckCollision(std::shared_ptr<Sadge::SadgePawn> CollidingPawn
         setNewPosition(Vector2<double>(Pos.x, (double)WindowResolution.second - Radius));
         Direction.y = -Direction.y;
     }
-    if(BallsDistance <= Radius * 2) {
-        Vector2<double> v = (Pos - ColPos) / BallsDistance * (Radius + Radius2 - BallsDistance);
-        setNewPosition(Pos + v);
-        Vector2<double> normal(v.y * -1, v.x);
-        float angle = std::acos(Vector2<double>::dotProduct(v, normal) / (v.absolute() * normal.absolute()));
-        Vector2<double> v2 = (ColPos - Pos) / BallsDistance * (Radius + Radius2 - BallsDistance);
-        Vector2<double> normal2(v2.y * -1, v2.x);
-        float angle2 = std::acos(Vector2<double>::dotProduct(v2, normal2) / (v2.absolute() * normal2.absolute()));
-        std::static_pointer_cast<Ball>(CollidingPawn)->setDirection(std::static_pointer_cast<Ball>(CollidingPawn)->getDirection().rotated(angle2));
-        Direction = Direction.rotated(angle);
+    if(CollisionEnabled == true) {
+        if(BallsDistance <= Radius * 2) {
+            Vector2<double> v = (Pos - ColPos) / BallsDistance * (Radius + Radius2 - BallsDistance);
+            if(SeparationEnabled) {
+                setNewPosition(Pos + v);
+            }
+            Vector2<double> normal(v.y * -1, v.x);
+            float angle = std::acos(Vector2<double>::dotProduct(v, normal) / (v.absolute() * normal.absolute()));
+            Vector2<double> v2 = (ColPos - Pos) / BallsDistance * (Radius + Radius2 - BallsDistance);
+            Vector2<double> normal2(v2.y * -1, v2.x);
+            float angle2 = std::acos(Vector2<double>::dotProduct(v2, normal2) / (v2.absolute() * normal2.absolute()));
+            std::static_pointer_cast<Ball>(CollidingPawn)->setDirection(std::static_pointer_cast<Ball>(CollidingPawn)->getDirection().rotated(angle2));
+            Direction = Direction.rotated(angle);
+        }
     }
 }
 
@@ -64,6 +69,21 @@ void Sadge::Ball::setDirection(const Vector2<double> &direction) {
 
 const Vector2<double> &Sadge::Ball::getDirection() const {
     return Direction;
+}
+
+void Sadge::Ball::EventHandler(std::vector<SDL_Event> &EventList) {
+    for (SDL_Event e : EventList) {
+        if (e.type == SDL_KEYDOWN) {
+            if (e.key.keysym.sym == SDLK_e) {
+                CollisionEnabled = !CollisionEnabled;
+            }
+        }
+        if (e.type == SDL_KEYDOWN) {
+            if (e.key.keysym.sym == SDLK_q) {
+                SeparationEnabled = !SeparationEnabled;
+            }
+        }
+    }
 }
 
 

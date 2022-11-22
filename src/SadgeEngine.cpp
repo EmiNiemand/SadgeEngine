@@ -58,7 +58,6 @@ void Sadge::SadgeEngine::Update() {
     auto FrameEndTime = StartTime;
     std::chrono::duration<double> DeltaTime{};
 
-
     SDL_Rect CamRect = SadgeEngineUtils::CreateRect(WindowResolution.first, WindowResolution.second, 0, 0);
 
     //Hack to get window to stay up
