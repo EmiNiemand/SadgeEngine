@@ -46,19 +46,41 @@ void Sadge::Ball::CheckCollision(std::shared_ptr<Sadge::SadgePawn> CollidingPawn
         setNewPosition(Vector2<double>(Pos.x, (double)WindowResolution.second - Radius));
         Direction.y = -Direction.y;
     }
-    if(CollisionEnabled == true) {
+    if(CollisionEnabled) {
         if(BallsDistance <= Radius * 2) {
+            Vector2<double> normal = Pos - ColPos;
             Vector2<double> v = (Pos - ColPos) / BallsDistance * (Radius + Radius2 - BallsDistance);
             if(SeparationEnabled) {
                 setNewPosition(Pos + v);
             }
-            Vector2<double> normal(v.y * -1, v.x);
-            float angle = std::acos(Vector2<double>::dotProduct(v, normal) / (v.absolute() * normal.absolute()));
-            Vector2<double> v2 = (ColPos - Pos) / BallsDistance * (Radius + Radius2 - BallsDistance);
-            Vector2<double> normal2(v2.y * -1, v2.x);
-            float angle2 = std::acos(Vector2<double>::dotProduct(v2, normal2) / (v2.absolute() * normal2.absolute()));
-            std::static_pointer_cast<Ball>(CollidingPawn)->setDirection(std::static_pointer_cast<Ball>(CollidingPawn)->getDirection().rotated(angle2));
-            Direction = Direction.rotated(angle);
+            double value = Vector2<double>::dotProduct(Direction, normal) / (Direction.absolute() * normal.absolute());
+            if(value > 1) value = 1;
+            if(value < -1) value = -1;
+            double angle = std::acos(value);
+            if(Pos.y < ColPos.y) {
+                Vector2<double> newDirection(Direction.rotated(angle).x, -Direction.rotated(angle).y);
+                Direction = newDirection;
+            }
+            else {
+                Vector2<double> newDirection(Direction.rotated(angle).x, Direction.rotated(angle).y);
+                Direction = newDirection;
+            }
+
+
+            Vector2<double> normal2 = ColPos - Pos;
+            auto ball2 = std::static_pointer_cast<Ball>(CollidingPawn);
+            value = Vector2<double>::dotProduct(ball2->getDirection(), normal2) / (ball2->getDirection().absolute(), normal2.absolute());
+            if(value > 1) value = 1;
+            if(value < -1) value = -1;
+            double angle2 = std::acos(value);
+            if(Pos.y < ColPos.y) {
+                Vector2<double> newDirection2(ball2->getDirection().rotated(angle2).x, -ball2->getDirection().rotated(angle2).y);
+                ball2->setDirection(newDirection2);
+            }
+            else {
+                Vector2<double> newDirection2(ball2->getDirection().rotated(angle2).x, ball2->getDirection().rotated(angle2).y);
+                ball2->setDirection(newDirection2);
+            }
         }
     }
 }
