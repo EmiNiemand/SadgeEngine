@@ -27,7 +27,7 @@ int main( int arc, char* argv[] ) {
         Engine.SpawnPawn(Ball);
 
         SDL_Rect BallRect2 = Sadge::SadgeEngineUtils::CreateRect(50, 50, Engine.getWindowResolution().first / 2 - 200,
-                                                                Engine.getWindowResolution().second / 2 +49.5);
+                                                                Engine.getWindowResolution().second / 2);
         std::shared_ptr<Sadge::SadgePawn> Ball2 = std::make_shared<Sadge::Ball>(BallTexture, BallRect2, false,
                                                                                2.0f, Vector2<double>(1, 0));
         Engine.SpawnPawn(Ball2);*/
