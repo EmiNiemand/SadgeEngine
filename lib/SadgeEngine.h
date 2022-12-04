@@ -7,6 +7,7 @@
 #include "SadgeEngineUtils.h"
 #include "Player1.h"
 #include "Player2.h"
+#include "Player3.h"
 #include "SadgeFileMap.h"
 #include "Camera.h"
 #include "CameraForBothPlayers.h"

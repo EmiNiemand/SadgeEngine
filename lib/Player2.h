@@ -20,6 +20,8 @@ namespace Sadge{
         void Update(double DeltaTime, std::vector<SDL_Event> &EventList) override;
         void Move(double DeltaTime, std::vector<SDL_Event> &EventList) override;
 
+        void CheckCollision(std::shared_ptr<Sadge::SadgePawn> CollidingPawn) override;
+        void CheckCollisionActors(std::vector<std::shared_ptr<Sadge::SadgeActor>> CollidingPawns) override;
     private:
         void Lerp(int &X, int &Y, int XDest, int YDest, double LerpValue);
     };

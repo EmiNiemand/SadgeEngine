@@ -11,7 +11,7 @@ int main( int arc, char* argv[] ) {
 
     srand(time(NULL));
     if(Engine.Start()) {
-        SDL_Texture* BallTexture = Sadge::SadgeEngineUtils::CreateTexture("../png/circle.png", Engine.getRenderer());
+        /*SDL_Texture* BallTexture = Sadge::SadgeEngineUtils::CreateTexture("../png/circle.png", Engine.getRenderer());
         for(int i = 0; i < 50; i++) {
 
             SDL_Rect BallRect = Sadge::SadgeEngineUtils::CreateRect(50, 50, rand() % (Engine.getWindowResolution().first - 25) + 25,
@@ -19,7 +19,7 @@ int main( int arc, char* argv[] ) {
             std::shared_ptr<Sadge::SadgePawn> Ball = std::make_shared<Sadge::Ball>(BallTexture, BallRect, false,
                                              (double)((rand() % 100) + 5) / 100, Vector2<double>(rand() % 2 + 1, rand() % 2 + 1));
             Engine.SpawnPawn(Ball);
-        }
+        }*/
         /*SDL_Rect BallRect = Sadge::SadgeEngineUtils::CreateRect(50, 50, Engine.getWindowResolution().first / 2 + 200,
                                                                 Engine.getWindowResolution().second / 2);
         std::shared_ptr<Sadge::SadgePawn> Ball = std::make_shared<Sadge::Ball>(BallTexture, BallRect, false,

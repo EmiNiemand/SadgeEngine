@@ -1,3 +1,4 @@
+/*
 //
 // Created by szymo on 16/11/2022.
 //
@@ -36,3 +37,4 @@ namespace Sadge{
 
 
 #endif //SADGEENGINE_BALL_H
+*/

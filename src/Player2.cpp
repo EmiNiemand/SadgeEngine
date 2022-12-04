@@ -29,3 +29,11 @@ void Sadge::Player2::Lerp(int &X, int &Y, int XDest, int YDest, double LerpValue
     X = X + (XDest - X) * LerpValue;
     Y = Y + (YDest - Y) * LerpValue;
 }
+
+void Sadge::Player2::CheckCollision(std::shared_ptr<Sadge::SadgePawn> CollidingPawn) {
+
+}
+
+void Sadge::Player2::CheckCollisionActors(std::vector<std::shared_ptr<Sadge::SadgeActor>> CollidingActors) {
+
+}

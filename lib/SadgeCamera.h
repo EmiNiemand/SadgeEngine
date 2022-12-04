@@ -20,6 +20,8 @@ namespace Sadge{
         SadgeCamera(const SDL_Rect &cameraPos, const std::pair<uint64_t, uint64_t> &mapSize);
         virtual ~SadgeCamera() = 0;
 
+        void setMapSize(const std::pair<uint64_t, uint64_t> &mapSize);
+
         const SDL_Rect &getCameraPos() const;
         const std::pair<uint64_t, uint64_t> &getMapSize() const;
         void setPosition(int x, int y);

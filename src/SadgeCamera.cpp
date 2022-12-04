@@ -24,3 +24,7 @@ void Sadge::SadgeCamera::setPosition(int x, int y) {
     CameraPos.y = y;
 }
 
+void Sadge::SadgeCamera::setMapSize(const std::pair<uint64_t, uint64_t> &mapSize) {
+    MapSize = mapSize;
+}
+

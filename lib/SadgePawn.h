@@ -21,7 +21,8 @@ namespace Sadge{
 
         virtual void Update(double DeltaTime, std::vector<SDL_Event> &EventList);
         virtual void Move(double DeltaTime, std::vector<SDL_Event> &EventList) = 0;
-        virtual void CheckCollision(std::shared_ptr<Sadge::SadgePawn> CollidingPawn, std::pair<uint16_t, uint16_t> WindowResolution) = 0;
+        virtual void CheckCollision(std::shared_ptr<Sadge::SadgePawn> CollidingPawn) = 0;
+        virtual void CheckCollisionActors(std::vector<std::shared_ptr<Sadge::SadgeActor>> CollidingActors) = 0;
         const Vector2<double> &getRealPosition() const;
         void setNewPosition(Vector2<double> position);
     protected:

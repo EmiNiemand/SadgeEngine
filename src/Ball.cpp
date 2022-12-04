@@ -1,3 +1,4 @@
+/*
 //
 // Created by szymo on 16/11/2022.
 //
@@ -110,3 +111,4 @@ void Sadge::Ball::EventHandler(std::vector<SDL_Event> &EventList) {
 }
 
 
+*/

@@ -8,10 +8,17 @@
 #include "SadgeActor.h"
 
 namespace Sadge{
+    enum TileType{
+        Wall,
+        Ground
+    };
     class SadgeTile : public SadgeActor {
+        TileType type;
     public:
-        SadgeTile(SDL_Texture *texture, SDL_Rect shapeAndPosition);
+        SadgeTile(SDL_Texture *texture, SDL_Rect shapeAndPosition, TileType type);
         ~SadgeTile() override;
+
+        TileType getType() const;
     };
 }
 

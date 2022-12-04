@@ -1,27 +1,19 @@
 //
-// Created by szymo on 12/10/2022.
+// Created by szymo on 02/12/2022.
 //
 
-#ifndef SADGEENGINE_PLAYER1_H
-#define SADGEENGINE_PLAYER1_H
+#ifndef SADGEENGINE_PLAYER3_H
+#define SADGEENGINE_PLAYER3_H
 
-#include "SDL.h"
-#include "SadgePawn.h"
-
-struct PlayerMoveState {
-    double RIGHT;
-    double LEFT;
-    double UP;
-    double DOWN;
-};
+#include "Player1.h"
 
 namespace Sadge{
-    class Player1 : public SadgePawn {
+    class Player3 : public SadgePawn{
     private:
         PlayerMoveState PlayerMovingState{};
         double MoveSpeed;
     public:
-        Player1(SDL_Texture *texture, SDL_Rect shapeAndPosition, bool bGravityOn, double MoveSpeed);
+        Player3(SDL_Texture *texture, const SDL_Rect &shapeAndPosition, bool bGravityOn, double moveSpeed);
 
         void Update(double DeltaTime, std::vector<SDL_Event> &EventList) override;
         void Move(double DeltaTime, std::vector<SDL_Event> &EventList) override;
@@ -34,4 +26,5 @@ namespace Sadge{
 }
 
 
-#endif //SADGEENGINE_PLAYER1_H
+
+#endif //SADGEENGINE_PLAYER3_H
