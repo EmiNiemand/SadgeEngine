@@ -194,6 +194,8 @@ void Sadge::SadgeEngine::Update() {
             MapNumber++;
             if(MapNumber > 2){
                 printf("Player1: %i | Player2: %i", Player1Points, Player2Points);
+                Player1Points = 0;
+                Player2Points = 0;
                 SDL_Delay(3000);
                 MapNumber = 0;
                 for (std::shared_ptr<SadgeActor> Actor : Maps[MapNumber].getMapTiles()){
