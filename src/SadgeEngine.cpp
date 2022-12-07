@@ -193,7 +193,7 @@ void Sadge::SadgeEngine::Update() {
             Actors.clear();
             MapNumber++;
             if(MapNumber > 2){
-                printf("Player1: %i | Player2: %i", Player1Points, Player2Points);
+                printf("Player1: %i | Player2: %i\n", Player1Points, Player2Points);
                 Player1Points = 0;
                 Player2Points = 0;
                 SDL_Delay(3000);
