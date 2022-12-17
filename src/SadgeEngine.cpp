@@ -59,46 +59,23 @@ void Sadge::SadgeEngine::Update() {
     std::chrono::duration<double> DeltaTime{};
     float Scale = 1;
 
-    int Player1Points = 0;
-    int Player2Points = 0;
-
-
     std::vector<SadgeFileMap> Maps;
 
     SadgeFileMap Map1("../png/Map");
-    Map1.CreateMap(Renderer, "../png/TileUpperWall.png", "../png/TileSideWall.png", "../png/TileFloor.png", 100);
+    Map1.CreateMap(Renderer, "../png/TileUpperWall.png", "../png/TileSideWall.png", "../png/TileFloor.png", 50);
     for (std::shared_ptr<SadgeActor> Actor : Map1.getMapTiles()){
         SpawnActor(Actor);
     }
-    SadgeFileMap Map2("../png/Map2");
-    Map2.CreateMap(Renderer, "../png/TileUpperWall.png", "../png/TileSideWall.png", "../png/TileFloor.png", 100);
-
-    SadgeFileMap Map3("../png/Map3");
-    Map3.CreateMap(Renderer, "../png/TileUpperWall.png", "../png/TileSideWall.png", "../png/TileFloor.png", 100);
 
     Maps.push_back(Map1);
-    Maps.push_back(Map2);
-    Maps.push_back(Map3);
 
     SDL_Rect CamRect = SadgeEngineUtils::CreateRect(WindowResolution.first, WindowResolution.second, 0, 0);
-    CameraForBothPlayers Cam(CamRect, Map1.getMapSize());
+    Camera Cam(CamRect, Map1.getMapSize());
     SDL_Texture* Player1Texture = Sadge::SadgeEngineUtils::CreateTexture("../png/Vent.png", Renderer);
     SDL_Rect Player1Rect = Sadge::SadgeEngineUtils::CreateRect(40, 40, WindowResolution.first / 2 - 50, WindowResolution.second / 2 - 50);
-    std::shared_ptr<Sadge::SadgePawn> Player1 = std::make_shared<Sadge::Player1>(Player1Texture, Player1Rect, false, 2);
+    std::shared_ptr<Sadge::SadgePawn> Player1 = std::make_shared<Sadge::Player1>(Player1Texture, Player1Rect, true, 2);
 
-    SDL_Texture* Player2Texture = Sadge::SadgeEngineUtils::CreateTexture("../png/circle.png", Renderer);
-    SDL_Rect Player2Rect = Sadge::SadgeEngineUtils::CreateRect(40, 40, WindowResolution.first / 2 + 50, WindowResolution.second / 2 + 50);
-    std::shared_ptr<Sadge::SadgePawn> Player2 = std::make_shared<Sadge::Player3>(Player2Texture, Player2Rect, false, 2);
     SpawnPawn(Player1);
-    SpawnPawn(Player2);
-
-    SDL_Texture* IndicatorTexture = Sadge::SadgeEngineUtils::CreateTexture("../png/Indicator.png", Renderer);
-
-
-    SDL_Texture* ExitTexture = Sadge::SadgeEngineUtils::CreateTexture("../png/petrfat.png", Renderer);
-    SDL_Rect ExitRect = Sadge::SadgeEngineUtils::CreateRect(80, 80, 1400, 1400);
-
-    int MapNumber = 0;
 
     //Hack to get window to stay up
     SDL_Event e;
@@ -115,12 +92,7 @@ void Sadge::SadgeEngine::Update() {
         //Clear screen
         SDL_RenderClear(Renderer);
 
-        Scale = 1 - std::sqrt(std::pow(Pawns.at(0)->getShapeAndPosition().x - Pawns.at(1)->getShapeAndPosition().x, 2)
-                              + std::pow(Pawns.at(0)->getShapeAndPosition().y - Pawns.at(1)->getShapeAndPosition().y, 2)) /
-                    (std::sqrt(std::pow(WindowResolution.first, 2) + std::pow(WindowResolution.second, 2)) * 2);
-        Scale = std::ceil(Scale * 100) / 100;
-
-        Cam.Update(Pawns.at(0), Pawns.at(1), Scale);
+        Cam.Update(Pawns.at(0));
 
         for(std::shared_ptr<SadgeActor> Actor : Actors) {
             auto Position = Actor->getShapeAndPosition();
@@ -132,92 +104,13 @@ void Sadge::SadgeEngine::Update() {
         }
 
         for(std::shared_ptr<SadgePawn> Pawn : Pawns) {
-            for(std::shared_ptr<SadgePawn> CollidingPawn : Pawns) {
-                if(Pawn != CollidingPawn) Pawn->CheckCollision(CollidingPawn);
-            }
-            Pawn->CheckCollisionActors(Actors);
-            Pawn->Update(DeltaTime.count(), Events);
+            Pawn->Update(DeltaTime.count(), Events, Pawns, Actors);
             auto Position = Pawn->getShapeAndPosition();
             SDL_Rect Pos;
             Pos = SadgeEngineUtils::CreateRect(Position.w * Scale + 1, Position.h * Scale + 1,
                    (Position.x - Cam.getCameraPos().x) * Scale,(Position.y - Cam.getCameraPos().y) * Scale);
             SDL_RenderCopy(Renderer, Pawn->getTexture(), nullptr, &Pos);
         }
-        SDL_Rect Pos = SadgeEngineUtils::CreateRect(Player1->getShapeAndPosition().w * Scale + 1, Player1->getShapeAndPosition().h * Scale + 1,
-           (Player1->getShapeAndPosition().x - Cam.getCameraPos().x) * Scale,(Player1->getShapeAndPosition().y - Cam.getCameraPos().y) * Scale);
-
-        // Player1
-        double angle = std::acos(Vector2<double>::dotProduct(Vector2<double>(0, 1),
-               Vector2<double>(Player1->getRealPosition() + Player1->getShapeAndPosition().w/2 - Vector2<double>(ExitRect.x + ExitRect.w/2, ExitRect.y + ExitRect.h/2))) /
-               (std::sqrt(std::pow(Vector2<double>(Player1->getRealPosition() + Player1->getShapeAndPosition().w/2 - Vector2<double>(ExitRect.x + ExitRect.w/2, ExitRect.y + ExitRect.h/2)).x, 2)
-               + std::pow(Vector2<double>(Player1->getRealPosition() + Player1->getShapeAndPosition().w/2 - Vector2<double>(ExitRect.x + ExitRect.w/2, ExitRect.y + ExitRect.h/2)).y, 2)))) * 360 / 2 / M_PI;
-
-        if(Player1->getRealPosition().x + Player1->getShapeAndPosition().w/2 > ExitRect.x + ExitRect.w/2){
-            angle = 180 + 180-angle;
-        }
-
-        SDL_RenderCopyEx(Renderer, IndicatorTexture, nullptr, &Pos, angle, NULL, SDL_FLIP_NONE);
-
-        //Player2
-        angle = std::acos(Vector2<double>::dotProduct(Vector2<double>(0, 1),
-              Vector2<double>(Player2->getRealPosition() + Player2->getShapeAndPosition().w/2 - Vector2<double>(ExitRect.x + ExitRect.w/2, ExitRect.y + ExitRect.h/2))) /
-              (std::sqrt(std::pow(Vector2<double>(Player2->getRealPosition() + Player2->getShapeAndPosition().w/2 - Vector2<double>(ExitRect.x + ExitRect.w/2, ExitRect.y + ExitRect.h/2)).x, 2)
-              + std::pow(Vector2<double>(Player2->getRealPosition() + Player2->getShapeAndPosition().w/2 - Vector2<double>(ExitRect.x + ExitRect.w/2, ExitRect.y + ExitRect.h/2)).y, 2)))) * 360 / 2 / M_PI;
-
-        if(Player2->getRealPosition().x + Player2->getShapeAndPosition().w/2 > ExitRect.x + ExitRect.w/2){
-            angle = 180 + 180-angle;
-        }
-
-        Pos = SadgeEngineUtils::CreateRect(Player2->getShapeAndPosition().w * Scale + 1, Player2->getShapeAndPosition().h * Scale + 1,
-           (Player2->getShapeAndPosition().x - Cam.getCameraPos().x) * Scale,(Player2->getShapeAndPosition().y - Cam.getCameraPos().y) * Scale);
-        SDL_RenderCopyEx(Renderer, IndicatorTexture, nullptr, &Pos, angle, NULL, SDL_FLIP_NONE);
-
-
-        Pos = SadgeEngineUtils::CreateRect(ExitRect.w * Scale + 1, ExitRect.h * Scale + 1,
-            (ExitRect.x - Cam.getCameraPos().x) * Scale,(ExitRect.y - Cam.getCameraPos().y) * Scale);
-
-        SDL_RenderCopy(Renderer, ExitTexture, nullptr, &Pos);
-
-
-        if((Player1->getRealPosition().x >= ExitRect.x && Player1->getRealPosition().y >= ExitRect.y &&
-        Player1->getRealPosition().x <= ExitRect.x + ExitRect.w && Player1->getRealPosition().y <= ExitRect.y + ExitRect.h)
-        || (Player2->getRealPosition().x >= ExitRect.x && Player2->getRealPosition().y >= ExitRect.y &&
-        Player2->getRealPosition().x <= ExitRect.x + ExitRect.w && Player2->getRealPosition().y <= ExitRect.y + ExitRect.h)){
-            if(Player1->getRealPosition().x >= ExitRect.x && Player1->getRealPosition().y >= ExitRect.y &&
-               Player1->getRealPosition().x <= ExitRect.x + ExitRect.w && Player1->getRealPosition().y <= ExitRect.y + ExitRect.h){
-                Player1Points++;
-            }
-            else{
-                Player2Points++;
-            }
-            Actors.clear();
-            MapNumber++;
-            if(MapNumber > 2){
-                printf("Player1: %i | Player2: %i\n", Player1Points, Player2Points);
-                Player1Points = 0;
-                Player2Points = 0;
-                SDL_Delay(3000);
-                MapNumber = 0;
-                for (std::shared_ptr<SadgeActor> Actor : Maps[MapNumber].getMapTiles()){
-                    SpawnActor(Actor);
-                }
-                Cam.setMapSize(Maps[MapNumber].getMapSize());
-                ExitRect.x -= 300;
-                ExitRect.y -= 900;
-                Player1->setNewPosition(Vector2<double>(WindowResolution.first / 2 - 50, WindowResolution.second / 2 - 50));
-                Player2->setNewPosition(Vector2<double>(WindowResolution.first / 2 + 50, WindowResolution.second / 2 + 50));
-                continue;
-            }
-            for (std::shared_ptr<SadgeActor> Actor : Maps[MapNumber].getMapTiles()){
-                SpawnActor(Actor);
-            }
-            Cam.setMapSize(Maps[MapNumber].getMapSize());
-            Player1->setNewPosition(Vector2<double>(200, 200));
-            Player2->setNewPosition(Vector2<double>(1000, 200));
-            ExitRect.x += 100;
-            ExitRect.y += 300;
-        }
-
 
         if (DeltaTime.count() < 0.016) {
             SDL_Delay(16 - DeltaTime.count() * 1000);

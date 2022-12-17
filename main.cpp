@@ -1,7 +1,6 @@
 #include "lib/SadgeEngine.h"
 #include "lib/SadgeEngineUtils.h"
 #include "lib/Player1.h"
-#include "lib/Player2.h"
 #include "lib/Ball.h"
 #include <memory>
 

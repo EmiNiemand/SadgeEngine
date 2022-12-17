@@ -6,7 +6,7 @@
 #ifndef SADGEENGINE_BALL_H
 #define SADGEENGINE_BALL_H
 
-#include "SadgePawn.h"
+#include "SadgePawn.H"
 
 namespace Sadge{
     class Ball : public SadgePawn{

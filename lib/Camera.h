@@ -18,6 +18,8 @@ namespace Sadge{
         ~Camera() override;
 
         void Update(std::shared_ptr<SadgePawn> PawnToFocus);
+    private:
+        void Lerp(int &X, int XDest, double LerpValue);
     };
 }
 

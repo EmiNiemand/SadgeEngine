@@ -3,7 +3,7 @@
 // Created by szymo on 16/11/2022.
 //
 
-#include "../lib/Ball.h"
+#include "../lib/Ball.H"
 #include <cmath>
 
 Sadge::Ball::Ball(SDL_Texture *texture, const SDL_Rect &shapeAndPosition, bool bGravityOn, double speed,

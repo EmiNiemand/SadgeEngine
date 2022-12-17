@@ -12,11 +12,16 @@ SadgeActor(texture, shapeAndPosition), bGravityOn(bGravityOn) {
 
 Sadge::SadgePawn::~SadgePawn() {}
 
-void Sadge::SadgePawn::Update(double DeltaTime, std::vector<SDL_Event> &EventList) {
-    Move(DeltaTime, EventList);
+void Sadge::SadgePawn::Update(double DeltaTime, std::vector<SDL_Event> &EventList,
+                              std::vector<std::shared_ptr<Sadge::SadgePawn>> CollidingPawns,
+                              std::vector<std::shared_ptr<Sadge::SadgeActor>> CollidingActors) {
     if(bGravityOn) {
-        Shift(Vector2<double>(0 * DeltaTime, 98.1 * DeltaTime));
+        Velocity.y -= G * DeltaTime;
+        if(Velocity.y <= G) {
+            Velocity.y = G;
+        }
     }
+    Move(DeltaTime, EventList, CollidingPawns, CollidingActors);
 }
 
 void Sadge::SadgePawn::Shift(Vector2<double> vector2) {

@@ -14,14 +14,21 @@ namespace Sadge{
     class SadgePawn : public SadgeActor {
     private:
         Vector2<double> RealPosition;
+    protected:
+        Vector2<double> Velocity;
         bool bGravityOn;
+        float G = -9.81;
     public:
         SadgePawn(SDL_Texture *texture, SDL_Rect shapeAndPosition, bool bGravityOn);
         ~SadgePawn() override;
 
-        virtual void Update(double DeltaTime, std::vector<SDL_Event> &EventList);
-        virtual void Move(double DeltaTime, std::vector<SDL_Event> &EventList) = 0;
-        virtual void CheckCollision(std::shared_ptr<Sadge::SadgePawn> CollidingPawn) = 0;
+        virtual void Update(double DeltaTime, std::vector<SDL_Event> &EventList,
+                          std::vector<std::shared_ptr<Sadge::SadgePawn>> CollidingPawns,
+                          std::vector<std::shared_ptr<Sadge::SadgeActor>> CollidingActors);
+        virtual void Move(double DeltaTime, std::vector<SDL_Event> &EventList,
+                          std::vector<std::shared_ptr<Sadge::SadgePawn>> CollidingPawns,
+                          std::vector<std::shared_ptr<Sadge::SadgeActor>> CollidingActors) = 0;
+        virtual void CheckCollision(std::vector<std::shared_ptr<Sadge::SadgePawn>> CollidingPawns) = 0;
         virtual void CheckCollisionActors(std::vector<std::shared_ptr<Sadge::SadgeActor>> CollidingActors) = 0;
         const Vector2<double> &getRealPosition() const;
         void setNewPosition(Vector2<double> position);

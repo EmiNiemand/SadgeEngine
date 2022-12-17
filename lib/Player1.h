@@ -11,22 +11,37 @@
 struct PlayerMoveState {
     double RIGHT;
     double LEFT;
-    double UP;
-    double DOWN;
+    double JUMP;
 };
 
 namespace Sadge{
     class Player1 : public SadgePawn {
     private:
         PlayerMoveState PlayerMovingState{};
+        int JumpCount = 2;
+        int MaxJumpCount = 2;
+        double JumpPower = 5;
+        double SecondJumpDelay = 0.3;
+        double SecondJumpTimer = 0;
+        bool bIsJumping = false;
         double MoveSpeed;
+
+        float H = 1.5;
+        float Xh = 5.5;
+        float Vx = 10;
+        float V0;
+        float FallVelocity = 2.5;
     public:
         Player1(SDL_Texture *texture, SDL_Rect shapeAndPosition, bool bGravityOn, double MoveSpeed);
 
-        void Update(double DeltaTime, std::vector<SDL_Event> &EventList) override;
-        void Move(double DeltaTime, std::vector<SDL_Event> &EventList) override;
+        void Update(double DeltaTime, std::vector<SDL_Event> &EventList,
+                    std::vector<std::shared_ptr<Sadge::SadgePawn>> CollidingPawns,
+                    std::vector<std::shared_ptr<Sadge::SadgeActor>> CollidingActors) override;
+        void Move(double DeltaTime, std::vector<SDL_Event> &EventList,
+                  std::vector<std::shared_ptr<Sadge::SadgePawn>> CollidingPawns,
+                  std::vector<std::shared_ptr<Sadge::SadgeActor>> CollidingActors) override;
 
-        void CheckCollision(std::shared_ptr<Sadge::SadgePawn> CollidingPawn) override;
+        void CheckCollision(std::vector<std::shared_ptr<Sadge::SadgePawn>> CollidingPawns) override;
         void CheckCollisionActors(std::vector<std::shared_ptr<Sadge::SadgeActor>> CollidingActors) override;
 
         void HandleEvent(std::vector<SDL_Event> &EventList);
