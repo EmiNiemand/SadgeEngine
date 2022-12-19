@@ -20,7 +20,6 @@ namespace Sadge{
         PlayerMoveState PlayerMovingState{};
         int JumpCount = 2;
         int MaxJumpCount = 2;
-        double JumpPower = 5;
         double SecondJumpDelay = 0.3;
         double SecondJumpTimer = 0;
         bool bIsJumping = false;
