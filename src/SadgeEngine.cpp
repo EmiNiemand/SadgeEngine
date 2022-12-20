@@ -73,7 +73,7 @@ void Sadge::SadgeEngine::Update() {
     Camera Cam(CamRect, Map1.getMapSize());
     SDL_Texture* Player1Texture = Sadge::SadgeEngineUtils::CreateTexture("../png/Vent.png", Renderer);
     SDL_Rect Player1Rect = Sadge::SadgeEngineUtils::CreateRect(40, 40, WindowResolution.first / 2 - 50, WindowResolution.second / 2 - 50);
-    std::shared_ptr<Sadge::SadgePawn> Player1 = std::make_shared<Sadge::Player1>(Player1Texture, Player1Rect, true, 2);
+    std::shared_ptr<Sadge::SadgePawn> Player1 = std::make_shared<Sadge::Player1>(Player1Texture, Player1Rect, true, 250);
 
     SpawnPawn(Player1);
 

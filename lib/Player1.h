@@ -24,12 +24,13 @@ namespace Sadge{
         double SecondJumpTimer = 0;
         bool bIsJumping = false;
         double MoveSpeed;
+        bool bIsCollidingWithSideWalls = false;
 
-        float H = 1.5;
-        float Xh = 5.5;
-        float Vx = 10;
-        float V0;
-        float FallVelocity = 2.5;
+        double H = 120;
+        double Th = 0.5;
+        double V0;
+        double FallVelocity = 1000;
+        Vector2<double> acc = 0;
     public:
         Player1(SDL_Texture *texture, SDL_Rect shapeAndPosition, bool bGravityOn, double MoveSpeed);
 

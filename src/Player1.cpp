@@ -8,8 +8,8 @@
 
 Sadge::Player1::Player1(SDL_Texture *texture, SDL_Rect shapeAndPosition, bool bGravityOn, double moveSpeed) : SadgePawn(texture,
                                                             shapeAndPosition, bGravityOn), MoveSpeed(moveSpeed) {
-    G = -2 * H * std::pow(Vx, 2) / std::pow(Xh, 2);
-    V0 = 2 * H * Vx / Xh;
+    G = -2 * H / (Th * Th);
+    V0 = 2 * H / Th;
     printf("G: %f, V0: %f\n", G, V0);
 }
 
@@ -28,6 +28,7 @@ void Sadge::Player1::Move(double DeltaTime, std::vector<SDL_Event> &EventList,
     HandleEvent(EventList);
     CheckCollision(CollidingPawns);
     CheckCollisionActors(CollidingActors);
+
     if(bIsJumping) {
         SecondJumpTimer += DeltaTime;
     }
@@ -35,13 +36,24 @@ void Sadge::Player1::Move(double DeltaTime, std::vector<SDL_Event> &EventList,
         bIsJumping = true;
         SecondJumpTimer = 0;
         JumpCount--;
-        Velocity.y = -V0 + Velocity.y * 0.1;
+        Velocity.y = -V0;
     }
     if(Velocity.y >= 0) {
         bIsJumping = false;
     }
-    Velocity.x = MoveSpeed * (PlayerMovingState.RIGHT - PlayerMovingState.LEFT);
-    Shift(Velocity);
+    Velocity.x += MoveSpeed * (PlayerMovingState.RIGHT - PlayerMovingState.LEFT) * 10 * DeltaTime;
+    if (std::abs(Velocity.x) >= MoveSpeed) {
+        Velocity.x = MoveSpeed * (PlayerMovingState.RIGHT - PlayerMovingState.LEFT);
+    }
+    if (bIsCollidingWithSideWalls) {
+        Velocity.x = 0;
+    }
+
+    Shift(Velocity * DeltaTime + (acc * DeltaTime * DeltaTime) / 2);
+    acc = 0;
+    acc = (Velocity - acc);
+
+    bIsCollidingWithSideWalls = false;
 }
 
 void Sadge::Player1::HandleEvent(std::vector<SDL_Event> &EventList) {
@@ -112,7 +124,8 @@ void Sadge::Player1::CheckCollisionActors(std::vector<std::shared_ptr<Sadge::Sad
 
             if(DistanceX <= Size + TileSize && DistanceY <= Size + TileSize){
                 if(DistanceX > DistanceY && Velocity.x != 0){
-                    Shift(Vector2<double>(-(PlayerMovingState.RIGHT - PlayerMovingState.LEFT) * (TileSize + Size - DistanceX + 2), 0));
+                    bIsCollidingWithSideWalls = true;
+                    Shift(Vector2<double>(-(PlayerMovingState.RIGHT - PlayerMovingState.LEFT) * (TileSize + Size - DistanceX), 0));
                 }
                 if(DistanceY > DistanceX && Velocity.y != 0){
                     SecondJumpTimer = 0;
