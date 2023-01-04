@@ -8,8 +8,8 @@
 
 Sadge::Player1::Player1(SDL_Texture *texture, SDL_Rect shapeAndPosition, bool bGravityOn, double moveSpeed) : SadgePawn(texture,
                                                             shapeAndPosition, bGravityOn), MoveSpeed(moveSpeed) {
-    G = -2 * H / (Th * Th);
-    V0 = 2 * H / Th;
+    G = -2 * H * Vx * Vx / (X * X);
+    V0 = 2 * H * Vx / X;
     printf("G: %f, V0: %f\n", G, V0);
 }
 

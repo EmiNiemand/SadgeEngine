@@ -27,7 +27,8 @@ namespace Sadge{
         bool bIsCollidingWithSideWalls = false;
 
         double H = 120;
-        double Th = 0.5;
+        double X = 10;
+        double Vx = 20;
         double V0;
         double FallVelocity = 1000;
         Vector2<double> acc = 0;
