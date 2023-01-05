@@ -8,7 +8,7 @@
 #include "SDL.h"
 #include "SadgeTile.h"
 #include "SadgeEngineUtils.h"
-
+#include "../lib/SadgeCamera.h"
 #include <string>
 #include <vector>
 #include <memory>
@@ -23,7 +23,7 @@ namespace Sadge{
         SadgeFileMap(std::string Path);
 
         void CreateMap(SDL_Renderer* Renderer, std::string UpWallPath, std::string SideWallPath, std::string FloorPath, int TileSize);
-
+        void RenderMap(double Scale, SadgeCamera* Cam, SDL_Renderer* Renderer, Vector2<double> Speed = {1, 1});
         const std::vector<std::shared_ptr<Sadge::SadgeActor>> &getMapTiles() const;
         const std::pair<uint64_t, uint64_t> &getMapSize() const;
 

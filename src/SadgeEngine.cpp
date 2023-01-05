@@ -41,7 +41,7 @@ bool Sadge::SadgeEngine::Start() {
         }
         else {
             //Start renderer color
-            SDL_SetRenderDrawColor( Renderer, 0x60, 0x60, 0x60, 0xFF);
+            SDL_SetRenderDrawColor( Renderer, 0x50, 0x50, 0xFF, 0xFF);
             //Start PNG loading
             int imgFlags = IMG_INIT_PNG;
             if( !( IMG_Init( imgFlags ) & imgFlags ) ) {
@@ -58,21 +58,27 @@ void Sadge::SadgeEngine::Update() {
     auto FrameEndTime = StartTime;
     std::chrono::duration<double> DeltaTime{};
     float Scale = 1;
+    Vector2<double> BackgroundSpeed = {0.1, 0.5};
+    Vector2<double> ForegroundSpeed = {1.2, 1.05};
 
     std::vector<SadgeFileMap> Maps;
 
-    SadgeFileMap Map1("../png/Map");
-    Map1.CreateMap(Renderer, "../png/TileUpperWall.png", "../png/TileSideWall.png", "../png/TileFloor.png", 50);
-    for (std::shared_ptr<SadgeActor> Actor : Map1.getMapTiles()){
+    SadgeFileMap Background("../png/Background");
+    Background.CreateMap(Renderer, "../png/House.png", "../png/Tree.png", "../png/Ground.png", 180);
+
+    SadgeFileMap Map("../png/Map");
+    Map.CreateMap(Renderer, "../png/Ground.png", "../png/Ground.png", "../png/Underground.png", 50);
+    for (std::shared_ptr<SadgeActor> Actor : Map.getMapTiles()){
         SpawnActor(Actor);
     }
 
-    Maps.push_back(Map1);
+    SadgeFileMap Foreground("../png/Foreground");
+    Foreground.CreateMap(Renderer, "../png/Ground.png", "../png/Grass.png", "../png/Underground.png", 50);
 
     SDL_Rect CamRect = SadgeEngineUtils::CreateRect(WindowResolution.first, WindowResolution.second, 0, 0);
-    Camera Cam(CamRect, Map1.getMapSize());
-    SDL_Texture* Player1Texture = Sadge::SadgeEngineUtils::CreateTexture("../png/Vent.png", Renderer);
-    SDL_Rect Player1Rect = Sadge::SadgeEngineUtils::CreateRect(40, 40, WindowResolution.first / 2 - 50, WindowResolution.second / 2 - 50);
+    Camera Cam(CamRect, Map.getMapSize());
+    SDL_Texture* Player1Texture = Sadge::SadgeEngineUtils::CreateTexture("../png/vent.png", Renderer);
+    SDL_Rect Player1Rect = Sadge::SadgeEngineUtils::CreateRect(50, 50, WindowResolution.first, 400);
     std::shared_ptr<Sadge::SadgePawn> Player1 = std::make_shared<Sadge::Player1>(Player1Texture, Player1Rect, true, 250);
 
     SpawnPawn(Player1);
@@ -93,6 +99,7 @@ void Sadge::SadgeEngine::Update() {
         SDL_RenderClear(Renderer);
 
         Cam.Update(Pawns.at(0));
+        Background.RenderMap(Scale, &Cam, Renderer, BackgroundSpeed);
 
         for(std::shared_ptr<SadgeActor> Actor : Actors) {
             auto Position = Actor->getShapeAndPosition();
@@ -115,6 +122,8 @@ void Sadge::SadgeEngine::Update() {
         if (DeltaTime.count() < 0.016) {
             SDL_Delay(16 - DeltaTime.count() * 1000);
         }
+
+        Foreground.RenderMap(Scale, &Cam, Renderer, ForegroundSpeed);
         //Update screen
         SDL_RenderPresent(Renderer);
         DeltaTime = std::chrono::high_resolution_clock::now() - FrameEndTime;

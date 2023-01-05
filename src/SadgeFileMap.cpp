@@ -3,7 +3,6 @@
 //
 
 #include "../lib/SadgeFileMap.h"
-#include "../lib/SadgeEngineUtils.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -19,6 +18,17 @@ std::string Sadge::SadgeFileMap::ReadFile(std::string& Path) {
     Str << File.rdbuf();
     std::string Content = Str.str();
     return Content;
+}
+
+void Sadge::SadgeFileMap::RenderMap(double Scale, SadgeCamera* Cam, SDL_Renderer* Renderer, Vector2<double> Speed) {
+    for(std::shared_ptr<SadgeActor> Actor : MapTiles) {
+        auto Position = Actor->getShapeAndPosition();
+        SDL_Rect Pos;
+        Pos = SadgeEngineUtils::CreateRect(Position.w * Scale + 1, Position.h * Scale + 1,
+             (Position.x - Cam->getCameraPos().x * Speed.x) * Scale,(Position.y - Cam->getCameraPos().y * Speed.y) * Scale);
+
+        SDL_RenderCopy(Renderer, Actor->getTexture(), nullptr, &Pos);
+    }
 }
 
 void Sadge::SadgeFileMap::CreateMap(SDL_Renderer* Renderer, std::string UpWallPath, std::string SideWallPath, std::string FloorPath, int TileSize) {
